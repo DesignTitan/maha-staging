@@ -3,2449 +3,1678 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAHA — Diamond-Grade Saffron, Science-Backed Wellness</title>
-<meta name="description" content="MAHA — premium wellness supplements powered by diamond-grade saffron. Clinically dosed, third-party tested, 21 certifications. Join the waitlist.">
-
-<!-- Fonts: Cormorant Garamond (display serif) + Syne (geometric sans) -->
+<title>Bubs Shah — Design Leader & Brand Strategist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
-  /* ============================================
+  /* =============================================
      DESIGN TOKENS
-     ============================================ */
+     ============================================= */
   :root {
-    --color-void:        #050507;
-    --color-surface:     #0c0c10;
-    --color-elevated:    #14141a;
-    --color-card:        #0f0f15;
-    --color-border:      rgba(255,255,255,0.06);
-    --color-border-hover:rgba(255,255,255,0.12);
-    --color-text:        #eee8dd;
-    --color-text-dim:    #7a7570;
-    --color-text-ghost:  #3a3835;
-    --color-gold:        #c9a84c;
-    --color-gold-light:  #e4cc7a;
-    --color-gold-glow:   rgba(201,168,76,0.15);
-    --color-rose:        #c44b3f;
-    --color-rose-glow:   rgba(196,75,63,0.08);
-    --color-cream:       #f5efe0;
-    --color-green:       #4c9a6e;
-
-    --font-display: 'Cormorant Garamond', 'Georgia', serif;
-    --font-sans:    'Syne', 'Helvetica Neue', sans-serif;
-
-    --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
-    --ease-out-quint:   cubic-bezier(0.22, 1, 0.36, 1);
-    --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
-    --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
-
-    --section-pad:      clamp(5rem, 12vh, 9rem);
-    --side-pad:         clamp(1.5rem, 7vw, 9rem);
+    --bg: #f4f4f5;
+    --surface: #ffffff;
+    --border: #e4e4e7;
+    --border-heavy: #a1a1aa;
+    --text: #18181b;
+    --text-dim: #71717a;
+    --text-ghost: #a1a1aa;
+    --accent: #3b82f6;
+    --accent-light: #dbeafe;
+    --dark-bg: #18181b;
+    --darker-bg: #0a0a0a;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --section-pad: clamp(3rem, 8vw, 6rem);
+    --side-pad: clamp(1.5rem, 5vw, 6rem);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* ============================================
-     RESET & BASE
-     ============================================ */
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html {
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    scroll-behavior: smooth;
-  }
+  html { font-size: 16px; scroll-behavior: smooth; }
 
   body {
-    background: var(--color-void);
-    color: var(--color-text);
-    font-family: var(--font-sans);
-    overflow-x: hidden;
-    cursor: none;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  a, button { cursor: none; }
-  img { max-width: 100%; display: block; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; font-family: inherit; }
 
-  /* ============================================
-     SCROLL PROGRESS BAR
-     ============================================ */
-  .scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 2px;
-    background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
-    z-index: 200;
-    transition: width 0.1s linear;
-  }
-
-  /* ============================================
-     STICKY SECTION NAV
-     ============================================ */
-  .section-nav {
+  /* =============================================
+     NAV DOTS (Right Side)
+     ============================================= */
+  .nav-dots {
     position: fixed;
     top: 50%;
-    right: clamp(0.75rem, 2vw, 1.5rem);
+    right: 1rem;
     transform: translateY(-50%);
-    z-index: 150;
+    z-index: 100;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    opacity: 0;
-    transition: opacity 0.5s;
+    gap: 0.6rem;
   }
 
-  .section-nav.visible { opacity: 1; }
-
-  .section-nav__dot {
-    width: 10px;
-    height: 10px;
-    border: 1px solid var(--color-text-ghost);
-    border-radius: 50%;
-    background: transparent;
-    cursor: pointer;
-    transition: background 0.3s, border-color 0.3s, transform 0.3s var(--ease-spring);
-    position: relative;
-  }
-
-  .section-nav__dot:hover {
-    border-color: var(--color-text-dim);
-    transform: scale(1.3);
-  }
-
-  .section-nav__dot.active {
-    background: var(--color-gold);
-    border-color: var(--color-gold);
-    transform: scale(1.2);
-  }
-
-  .section-nav__dot::before {
-    content: attr(aria-label);
-    position: absolute;
-    right: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-text-dim);
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-  }
-
-  .section-nav__dot:hover::before { opacity: 1; }
-
-  /* ============================================
-     CUSTOM CURSOR
-     ============================================ */
-  .cursor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    pointer-events: none;
-    mix-blend-mode: difference;
-  }
-
-  .cursor__dot {
+  .nav-dots a {
+    display: block;
     width: 8px;
     height: 8px;
-    background: var(--color-cream);
     border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s var(--ease-out-expo),
-                height 0.3s var(--ease-out-expo),
-                background 0.3s;
+    background: rgba(161, 161, 170, 0.5);
+    transition: all 0.3s var(--ease);
   }
 
-  .cursor__dot.hovering {
-    width: 48px;
-    height: 48px;
-    background: var(--color-gold);
+  .nav-dots a:hover {
+    background: var(--accent);
+    transform: scale(1.6);
   }
 
-  .cursor__ring {
-    position: absolute;
-    top: -16px;
-    left: -16px;
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    transition: width 0.4s var(--ease-out-expo),
-                height 0.4s var(--ease-out-expo),
-                top 0.4s var(--ease-out-expo),
-                left 0.4s var(--ease-out-expo),
-                opacity 0.3s,
-                border-color 0.3s;
+  @media (max-width: 768px) {
+    .nav-dots { display: none; }
   }
 
-  .cursor__dot.hovering + .cursor__ring {
-    width: 64px;
-    height: 64px;
-    top: -28px;
-    left: -28px;
-    border-color: var(--color-gold);
-    opacity: 0.5;
-  }
-
-  /* ============================================
-     ANNOUNCEMENT BAR
-     ============================================ */
-  .announce {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: linear-gradient(90deg, var(--color-rose) 0%, #a83a30 50%, var(--color-rose) 100%);
-    background-size: 200% 100%;
-    animation: announceGradient 6s ease infinite, announceSlide 0.9s var(--ease-out-expo) 0.2s both;
-    transform: translateY(-100%);
-    backdrop-filter: blur(8px);
-  }
-
-  @keyframes announceSlide { to { transform: translateY(0); } }
-  @keyframes announceGradient {
-    0%, 100% { background-position: 0% 50%; }
-    50%      { background-position: 100% 50%; }
-  }
-
-  .announce__inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 0.65rem 2rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-
-  .announce__pulse {
-    width: 6px; height: 6px;
-    background: var(--color-cream);
-    border-radius: 50%;
-    position: relative;
-  }
-
-  .announce__pulse::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border: 1px solid rgba(255,255,255,0.4);
-    border-radius: 50%;
-    animation: pulseRing 2s ease-out infinite;
-  }
-
-  @keyframes pulseRing {
-    0%   { transform: scale(0.8); opacity: 1; }
-    100% { transform: scale(2.2); opacity: 0; }
-  }
-
-  .announce__link {
-    color: var(--color-cream);
-    text-decoration: none;
-    position: relative;
-    padding-bottom: 2px;
-  }
-
-  .announce__link::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 1px;
-    background: var(--color-cream);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.4s var(--ease-out-expo);
-  }
-
-  .announce__link:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
-  .announce__close {
-    position: absolute;
-    right: 1.25rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--color-cream);
-    font-size: 1rem;
-    opacity: 0.5;
-    transition: opacity 0.3s, transform 0.3s var(--ease-spring);
-    line-height: 1;
-  }
-
-  .announce__close:hover {
-    opacity: 1;
-    transform: translateY(-50%) rotate(90deg);
-  }
-
-  /* ============================================
-     HERO SECTION
-     ============================================ */
+  /* =============================================
+     SECTION 1: HERO
+     ============================================= */
   .hero {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    min-height: 750px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: end;
-    overflow: hidden;
-  }
-
-  .hero__video-wrap {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .hero__video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: saturate(0.5) brightness(0.45) contrast(1.1);
-    transform: scale(1.08);
-    animation: kenBurns 25s ease-in-out infinite alternate;
-  }
-
-  @keyframes kenBurns {
-    0%   { transform: scale(1.08) translate(0, 0); }
-    100% { transform: scale(1.15) translate(-1%, -1%); }
-  }
-
-  .hero__overlay {
-    position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(175deg,
-      rgba(5,5,7,0.85) 0%, rgba(5,5,7,0.2) 30%,
-      rgba(5,5,7,0.0) 50%, rgba(5,5,7,0.5) 70%,
-      rgba(5,5,7,0.97) 100%);
-  }
-
-  .hero__atmosphere {
-    position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background:
-      radial-gradient(ellipse 50% 50% at 15% 85%, var(--color-gold-glow) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 35% at 85% 15%, var(--color-rose-glow) 0%, transparent 60%),
-      radial-gradient(ellipse 80% 40% at 50% 100%, rgba(5,5,7,0.9) 0%, transparent 70%);
-  }
-
-  .hero__grain {
-    position: absolute; inset: -100%; z-index: 3;
-    width: 300%; height: 300%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity: 0.025; pointer-events: none;
-    animation: grainShift 0.4s steps(5) infinite;
-  }
-
-  @keyframes grainShift {
-    0%   { transform: translate(0, 0); }
-    20%  { transform: translate(-3%, -3%); }
-    40%  { transform: translate(2%, -1%); }
-    60%  { transform: translate(-1%, 4%); }
-    80%  { transform: translate(3%, 2%); }
-    100% { transform: translate(0, 0); }
-  }
-
-  .hero__vignette {
-    position: absolute; inset: 0; z-index: 3;
-    box-shadow: inset 0 0 200px 80px rgba(0,0,0,0.5);
-    pointer-events: none;
-  }
-
-  /* Floating orbs */
-  .orb {
-    position: absolute; z-index: 4; border-radius: 50%;
-    pointer-events: none; filter: blur(60px);
-    opacity: 0; animation: orbFadeIn 3s var(--ease-out-expo) forwards;
-  }
-
-  .orb--gold {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
-    bottom: 10%; left: 5%; animation-delay: 1.5s;
-  }
-
-  .orb--rose {
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(196,75,63,0.08) 0%, transparent 70%);
-    top: 8%; right: 12%; animation-delay: 2s;
-  }
-
-  .orb--blue {
-    width: 250px; height: 250px;
-    background: radial-gradient(circle, rgba(76,120,201,0.06) 0%, transparent 70%);
-    top: 40%; left: 40%; animation-delay: 2.5s;
-  }
-
-  @keyframes orbFadeIn { to { opacity: 1; } }
-
-  /* Hero content */
-  .hero__content {
-    position: relative; z-index: 10;
-    padding: 0 0 clamp(4rem, 10vh, 7rem) var(--side-pad);
-    grid-column: 1; grid-row: 1; align-self: end;
-  }
-
-  .hero__eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.65rem; font-weight: 700;
-    letter-spacing: 0.28em; text-transform: uppercase;
-    color: var(--color-gold);
-    margin-bottom: 1.75rem;
-    display: flex; align-items: center; gap: 1rem;
-    overflow: hidden;
-  }
-
-  .hero__eyebrow-line {
-    width: 3rem; height: 1px; background: var(--color-gold);
-    transform: scaleX(0); transform-origin: left;
-    animation: lineGrow 1s var(--ease-out-expo) 1s forwards;
-  }
-
-  .hero__eyebrow-text {
-    opacity: 0; transform: translateY(100%);
-    animation: textRevealUp 0.8s var(--ease-out-expo) 1.1s forwards;
-  }
-
-  @keyframes lineGrow { to { transform: scaleX(1); } }
-  @keyframes textRevealUp { to { opacity: 1; transform: translateY(0); } }
-
-  .hero__title {
-    font-family: var(--font-display);
-    font-size: clamp(3.5rem, 7.5vw, 7.5rem);
-    font-weight: 300; line-height: 0.92;
-    letter-spacing: -0.03em;
-    margin-bottom: 2rem; max-width: 14ch;
-  }
-
-  .hero__title .word {
-    display: inline-block; overflow: hidden;
-    vertical-align: bottom; margin-right: 0.25em;
-  }
-
-  .hero__title .word-inner {
-    display: inline-block; transform: translateY(110%);
-    animation: wordSlideUp 1.1s var(--ease-out-quint) forwards;
-  }
-
-  .hero__title .word:nth-child(1) .word-inner { animation-delay: 1.15s; }
-  .hero__title .word:nth-child(2) .word-inner { animation-delay: 1.25s; }
-  .hero__title .word:nth-child(3) .word-inner { animation-delay: 1.35s; }
-  .hero__title .word:nth-child(4) .word-inner { animation-delay: 1.45s; }
-  .hero__title .word:nth-child(5) .word-inner { animation-delay: 1.55s; }
-
-  @keyframes wordSlideUp { to { transform: translateY(0); } }
-
-  .hero__title em {
-    font-style: italic; font-weight: 700; color: var(--color-gold);
-    position: relative;
-  }
-
-  .hero__title em::after {
-    content: ''; position: absolute; bottom: 0.05em; left: 0;
-    width: 100%; height: 2px; background: var(--color-gold);
-    transform: scaleX(0); transform-origin: left;
-    animation: lineGrow 1.2s var(--ease-out-expo) 2s forwards;
-  }
-
-  .hero__subtitle {
-    font-family: var(--font-sans);
-    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
-    font-weight: 400; line-height: 1.7;
-    color: var(--color-text-dim); max-width: 42ch;
-    margin-bottom: 3rem;
-    opacity: 0; transform: translateY(20px);
-    animation: fadeUp 1s var(--ease-out-expo) 1.8s forwards;
-  }
-
-  /* Rotating subheadline */
-  .hero__rotating {
-    position: relative;
-    height: 1.7em;
-    overflow: hidden;
-    margin-bottom: 3rem;
-    opacity: 0; transform: translateY(20px);
-    animation: fadeUp 1s var(--ease-out-expo) 1.8s forwards;
-  }
-
-  .hero__rotating-line {
-    position: absolute;
-    width: 100%;
-    font-family: var(--font-sans);
-    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
-    font-weight: 400; line-height: 1.7;
-    color: var(--color-text-dim);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
-  }
-
-  .hero__rotating-line.active {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-
-  .hero__cta-row {
-    display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
-    opacity: 0; transform: translateY(20px);
-    animation: fadeUp 1s var(--ease-out-expo) 2.1s forwards;
-  }
-
-  /* Buttons */
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 0.75rem;
-    padding: 1.1rem 2.5rem;
-    background: var(--color-gold); color: var(--color-void);
-    font-family: var(--font-sans);
-    font-size: 0.72rem; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    text-decoration: none; border: none;
-    position: relative; overflow: hidden;
-    transition: transform 0.5s var(--ease-out-expo),
-                box-shadow 0.5s var(--ease-out-expo);
-  }
-
-  .btn-primary::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
-    transform: translateX(-120%);
-    transition: transform 0.7s var(--ease-out-expo);
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 40px rgba(201,168,76,0.3), 0 2px 8px rgba(201,168,76,0.2);
-  }
-
-  .btn-primary:hover::before { transform: translateX(120%); }
-
-  .btn-primary__arrow { transition: transform 0.4s var(--ease-spring); }
-  .btn-primary:hover .btn-primary__arrow { transform: translateX(5px); }
-
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 0.75rem;
-    padding: 0.5rem 0; background: none; border: none;
-    color: var(--color-text); font-family: var(--font-sans);
-    font-size: 0.72rem; font-weight: 500;
-    letter-spacing: 0.08em; text-decoration: none;
-  }
-
-  .btn-ghost__icon {
-    width: 40px; height: 40px;
-    border: 1px solid var(--color-border);
-    border-radius: 50%; display: flex;
-    align-items: center; justify-content: center;
-    transition: border-color 0.4s, background 0.4s, transform 0.4s var(--ease-spring);
-  }
-
-  .btn-ghost:hover .btn-ghost__icon {
-    border-color: var(--color-gold);
-    background: var(--color-gold-glow);
-    transform: scale(1.1);
-  }
-
-  .btn-ghost__label { position: relative; }
-
-  .btn-ghost__label::after {
-    content: ''; position: absolute; bottom: -4px; left: 0;
-    width: 0; height: 1px; background: var(--color-text);
-    transition: width 0.5s var(--ease-out-expo);
-  }
-
-  .btn-ghost:hover .btn-ghost__label::after { width: 100%; }
-
-  /* 3D Carousel */
-  .hero__carousel-wrap {
-    position: relative; z-index: 10;
-    grid-column: 2; grid-row: 1;
-    align-self: center; justify-self: center;
-    padding-right: clamp(2rem, 5vw, 6rem);
-    opacity: 0; transform: translateY(40px);
-    animation: fadeUp 1.2s var(--ease-out-expo) 1.8s forwards;
-  }
-
-  .carousel {
-    width: clamp(300px, 24vw, 400px);
-    height: 480px; perspective: 1000px; position: relative;
-  }
-
-  .carousel__card {
-    position: absolute; inset: 0;
-    border-radius: 16px; overflow: hidden;
-    backface-visibility: hidden; transform-style: preserve-3d;
-    transition: all 0.9s var(--ease-out-quint);
-    will-change: transform, opacity;
-    border: 1px solid var(--color-border);
-  }
-
-  .carousel__card[data-state="active"]  { transform: translateZ(0) rotateY(0deg) scale(1); opacity: 1; z-index: 3; }
-  .carousel__card[data-state="next"]    { transform: translateZ(-60px) translateX(30px) rotateY(-5deg) scale(0.92); opacity: 0.5; z-index: 2; }
-  .carousel__card[data-state="back"]    { transform: translateZ(-120px) translateX(50px) rotateY(-8deg) scale(0.84); opacity: 0.2; z-index: 1; }
-  .carousel__card[data-state="hidden"]  { transform: translateZ(-180px) translateX(60px) rotateY(-10deg) scale(0.76); opacity: 0; z-index: 0; pointer-events: none; }
-
-  .carousel__card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 5s ease; }
-  .carousel__card:hover .carousel__card-img { transform: scale(1.05); }
-
-  .carousel__card-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, transparent 30%, rgba(5,5,7,0.9) 100%);
-    pointer-events: none;
-  }
-
-  .carousel__card-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem; z-index: 1; }
-  .carousel__card-tag { font-family: var(--font-sans); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-gold); margin-bottom: 0.6rem; }
-  .carousel__card-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; line-height: 1.15; margin-bottom: 0.4rem; }
-  .carousel__card-desc { font-size: 0.75rem; color: var(--color-text-dim); line-height: 1.5; }
-
-  .carousel__nav { display: flex; gap: 0.6rem; margin-top: 2rem; justify-content: center; }
-
-  .carousel__nav-item {
-    width: 40px; height: 3px;
-    background: var(--color-text-ghost); border-radius: 2px;
-    overflow: hidden; cursor: pointer; position: relative;
-    transition: background 0.3s;
-    border: none; padding: 0;
-  }
-
-  .carousel__nav-item:hover { background: rgba(255,255,255,0.15); }
-  .carousel__nav-fill { width: 0; height: 100%; background: var(--color-gold); border-radius: 2px; }
-  .carousel__nav-item.active .carousel__nav-fill { animation: navFill 5s linear forwards; }
-
-  @keyframes navFill { from { width: 0; } to { width: 100%; } }
-
-  /* Decorative elements */
-  .deco { position: absolute; z-index: 5; pointer-events: none; }
-
-  .deco__rings {
-    top: 12%; right: 22%; width: 280px; height: 280px;
-    opacity: 0; animation: fadeUp 2s var(--ease-out-expo) 2.5s forwards;
-  }
-
-  .deco__rings circle { fill: none; stroke: rgba(201,168,76,0.06); stroke-width: 0.5; transform-origin: center; }
-  .deco__rings circle:nth-child(1) { animation: ringPulse 8s ease-in-out infinite; }
-  .deco__rings circle:nth-child(2) { animation: ringPulse 8s ease-in-out 2s infinite; }
-  .deco__rings circle:nth-child(3) { animation: ringPulse 8s ease-in-out 4s infinite; }
-
-  @keyframes ringPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50%      { transform: scale(1.15); opacity: 0.5; }
-  }
-
-  .deco__vline {
-    left: 6%; top: 25%; width: 1px; height: 0;
-    background: linear-gradient(to bottom, transparent, var(--color-gold-glow), transparent);
-    animation: vlineGrow 1.5s var(--ease-out-expo) 2.2s forwards;
-  }
-
-  @keyframes vlineGrow { to { height: 150px; } }
-
-  .deco__hline {
-    bottom: 18%; left: 10%; width: 0; height: 1px;
-    background: linear-gradient(to right, var(--color-gold-glow), transparent);
-    animation: hlineGrow 1.2s var(--ease-out-expo) 2.6s forwards;
-  }
-
-  @keyframes hlineGrow { to { width: 100px; } }
-
-  .deco__corner { width: 30px; height: 30px; }
-
-  .deco__corner--tl {
-    top: clamp(5rem, 10vh, 8rem); left: clamp(2rem, 5vw, 5rem);
-    border-top: 1px solid rgba(201,168,76,0.1); border-left: 1px solid rgba(201,168,76,0.1);
-    opacity: 0; animation: fadeUp 1s var(--ease-out-expo) 2.8s forwards;
-  }
-
-  .deco__corner--br {
-    bottom: clamp(3rem, 6vh, 5rem); right: clamp(2rem, 5vw, 5rem);
-    border-bottom: 1px solid rgba(201,168,76,0.1); border-right: 1px solid rgba(201,168,76,0.1);
-    opacity: 0; animation: fadeUp 1s var(--ease-out-expo) 3s forwards;
-  }
-
-  .deco__number {
-    position: absolute; bottom: clamp(3rem, 6vh, 5rem); left: clamp(2.5rem, 6vw, 6rem);
-    z-index: 10; font-family: var(--font-display); font-size: 0.7rem; font-weight: 300;
-    letter-spacing: 0.15em; color: var(--color-text-ghost);
-    opacity: 0; animation: fadeUp 1s var(--ease-out-expo) 3s forwards;
-  }
-
-  .deco__number span { color: var(--color-gold); font-weight: 600; }
-
-  .hero__scroll {
-    position: absolute; bottom: clamp(2rem, 5vh, 4rem); right: clamp(2rem, 5vw, 5rem);
-    z-index: 10; display: flex; flex-direction: column;
-    align-items: center; gap: 0.75rem;
-    opacity: 0; animation: fadeUp 1s var(--ease-out-expo) 3.2s forwards;
-  }
-
-  .hero__scroll-text {
-    font-size: 0.55rem; font-weight: 600; letter-spacing: 0.25em;
-    text-transform: uppercase; color: var(--color-text-dim);
-    writing-mode: vertical-rl;
-  }
-
-  .hero__scroll-line {
-    width: 1px; height: 50px; position: relative; overflow: hidden;
-  }
-
-  .hero__scroll-line::before {
-    content: ''; position: absolute; top: -100%; left: 0;
-    width: 1px; height: 100%;
-    background: linear-gradient(to bottom, transparent, var(--color-gold));
-    animation: scrollLine 2s var(--ease-in-out-circ) infinite;
-  }
-
-  @keyframes scrollLine {
-    0%   { top: -100%; }
-    100% { top: 100%; }
-  }
-
-  /* ============================================
-     SHARED SECTION STYLES
-     ============================================ */
-  .section {
-    position: relative;
+    min-height: 100vh;
     padding: var(--section-pad) var(--side-pad);
-    overflow: hidden;
-  }
-
-  .section__eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.6rem; font-weight: 700;
-    letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--color-gold);
-    margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: 1rem;
-  }
-
-  .section__eyebrow-line {
-    width: 2.5rem; height: 1px; background: var(--color-gold);
-  }
-
-  .section__title {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    font-weight: 300; line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-  }
-
-  .section__title em {
-    font-style: italic; font-weight: 700; color: var(--color-gold);
-  }
-
-  .section__subtitle {
-    font-size: clamp(0.85rem, 1.1vw, 1rem);
-    font-weight: 400; line-height: 1.7;
-    color: var(--color-text-dim);
-    max-width: 52ch; margin-bottom: 3.5rem;
-  }
-
-  /* Scroll reveal animation */
-  .reveal {
-    opacity: 0; transform: translateY(40px);
-    transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
-  }
-
-  .reveal.visible {
-    opacity: 1; transform: translateY(0);
-  }
-
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
-  .reveal-delay-5 { transition-delay: 0.5s; }
-  .reveal-delay-6 { transition-delay: 0.6s; }
-
-  /* ============================================
-     SECTION 2: FEATURES / BENEFITS
-     ============================================ */
-  .features { background: var(--color-void); }
-
-  .features__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-
-  .feature-card {
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    transition: border-color 0.4s, transform 0.4s var(--ease-out-expo),
-                box-shadow 0.4s var(--ease-out-expo);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .feature-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at top left, var(--color-gold-glow) 0%, transparent 60%);
-    opacity: 0; transition: opacity 0.5s;
-  }
-
-  .feature-card:hover {
-    border-color: var(--color-border-hover);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  }
-
-  .feature-card:hover::before { opacity: 1; }
-
-  .feature-card__icon {
-    width: 48px; height: 48px;
-    margin-bottom: 1.5rem;
-    color: var(--color-gold);
-  }
-
-  .feature-card__title {
-    font-family: var(--font-display);
-    font-size: 1.5rem; font-weight: 600;
-    margin-bottom: 0.75rem;
-    position: relative;
-  }
-
-  .feature-card__text {
-    font-size: 0.85rem; line-height: 1.65;
-    color: var(--color-text-dim);
-    position: relative;
-  }
-
-  /* ============================================
-     SECTION 3: INGREDIENTS
-     ============================================ */
-  .ingredients {
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .ingredients__layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(3rem, 6vw, 6rem);
-    align-items: start;
-  }
-
-  .ingredients__story {
-    position: sticky; top: 6rem;
-  }
-
-  .ingredients__cards {
-    display: flex; flex-direction: column; gap: 1.5rem;
-  }
-
-  .ingredient-card {
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 1.5rem;
-    padding: 2rem;
-    background: var(--color-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    transition: border-color 0.4s, transform 0.3s var(--ease-out-expo);
-  }
-
-  .ingredient-card:hover {
-    border-color: var(--color-gold-glow);
-    transform: translateX(4px);
-  }
-
-  .ingredient-card__icon {
-    width: 64px; height: 64px;
-    background: var(--color-void);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--color-gold);
-    font-family: var(--font-display);
-    font-size: 1.5rem; font-weight: 700;
-    font-style: italic;
-  }
-
-  .ingredient-card__name {
-    font-family: var(--font-display);
-    font-size: 1.25rem; font-weight: 600;
-    margin-bottom: 0.35rem;
-  }
-
-  .ingredient-card__desc {
-    font-size: 0.8rem; line-height: 1.6;
-    color: var(--color-text-dim);
-    margin-bottom: 0.5rem;
-  }
-
-  .ingredient-card__research {
-    font-size: 0.65rem; font-weight: 600;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--color-gold);
-    display: inline-flex; align-items: center; gap: 0.5rem;
-  }
-
-  .ingredient-card__research-dot {
-    width: 4px; height: 4px;
-    background: var(--color-gold);
-    border-radius: 50%;
-  }
-
-  .ingredients__stat-row {
-    display: flex; gap: 3rem; margin-top: 3rem;
-    border-top: 1px solid var(--color-border);
-    padding-top: 2rem;
-  }
-
-  .stat { text-align: left; }
-
-  .stat__number {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 4vw, 3.5rem);
-    font-weight: 300; color: var(--color-gold);
-    line-height: 1;
-  }
-
-  .stat__label {
-    font-size: 0.65rem; font-weight: 600;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--color-text-dim); margin-top: 0.5rem;
-  }
-
-  /* ============================================
-     SECTION 3.5: PRODUCT TIERS
-     ============================================ */
-  .products { background: var(--color-void); }
-
-  .products__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-
-  .product-card {
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    display: flex; flex-direction: column;
-    transition: border-color 0.4s, transform 0.4s var(--ease-out-expo),
-                box-shadow 0.4s var(--ease-out-expo);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .product-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at bottom right, var(--color-gold-glow) 0%, transparent 60%);
-    opacity: 0; transition: opacity 0.5s;
-  }
-
-  .product-card:hover {
-    border-color: var(--color-border-hover);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  }
-
-  .product-card:hover::before { opacity: 1; }
-
-  .product-card__volume {
-    font-family: var(--font-sans);
-    font-size: 0.6rem; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--color-gold);
-    margin-bottom: 1rem;
-    position: relative;
-  }
-
-  .product-card__name {
-    font-family: var(--font-display);
-    font-size: 1.8rem; font-weight: 600;
-    margin-bottom: 1rem;
-    position: relative;
-  }
-
-  .product-card__desc {
-    font-size: 0.85rem; line-height: 1.65;
-    color: var(--color-text-dim);
-    position: relative;
-    flex: 1;
-  }
-
-  .products__flavor-note {
-    text-align: center;
-    margin-top: 3rem;
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--color-text-dim);
-  }
-
-  /* ============================================
-     SECTION 4: TESTIMONIALS
-     ============================================ */
-  .testimonials { background: var(--color-void); }
-
-  .testimonials__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-
-  .testimonial-card {
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    display: flex; flex-direction: column;
-    transition: border-color 0.4s;
-  }
-
-  .testimonial-card:hover { border-color: var(--color-border-hover); }
-
-  .testimonial-card__stars {
-    display: flex; gap: 0.25rem;
-    margin-bottom: 1.5rem;
-    color: var(--color-gold);
-  }
-
-  .testimonial-card__quote {
-    font-family: var(--font-display);
-    font-size: 1.15rem; font-weight: 400;
-    line-height: 1.6; font-style: italic;
-    flex: 1;
-    margin-bottom: 2rem;
-    position: relative;
-    padding-left: 1.5rem;
-    border-left: 2px solid var(--color-gold-glow);
-  }
-
-  .testimonial-card__author {
-    display: flex; align-items: center; gap: 1rem;
-  }
-
-  .testimonial-card__avatar {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: var(--color-elevated);
-    border: 1px solid var(--color-border);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-sans);
-    font-size: 0.7rem; font-weight: 700;
-    color: var(--color-gold);
-  }
-
-  .testimonial-card__name {
-    font-size: 0.8rem; font-weight: 600;
-  }
-
-  .testimonial-card__detail {
-    font-size: 0.7rem; color: var(--color-text-dim);
-    margin-top: 0.15rem;
-  }
-
-  /* ============================================
-     SECTION 5: CERTIFICATIONS & TRUST
-     ============================================ */
-  .trust {
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-    text-align: center;
-  }
-
-  .trust .section__eyebrow { justify-content: center; }
-  .trust .section__title { margin-left: auto; margin-right: auto; }
-  .trust .section__subtitle { margin-left: auto; margin-right: auto; }
-
-  .trust__badges {
     display: flex;
-    justify-content: center;
-    gap: clamp(2rem, 5vw, 4rem);
-    flex-wrap: wrap;
-    margin-bottom: 3rem;
-  }
-
-  .trust-badge {
-    display: flex; flex-direction: column;
-    align-items: center; gap: 1rem;
-    width: 140px;
-    transition: transform 0.4s var(--ease-out-expo);
-  }
-
-  .trust-badge:hover { transform: translateY(-4px); }
-
-  .trust-badge__icon {
-    width: 72px; height: 72px;
-    border: 1px solid var(--color-border);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--color-elevated);
-    transition: border-color 0.4s;
-  }
-
-  .trust-badge:hover .trust-badge__icon { border-color: var(--color-gold); }
-
-  .trust-badge__label {
-    font-size: 0.65rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--color-text-dim); line-height: 1.4;
-    text-align: center;
-  }
-
-  .trust__partners {
-    display: flex; justify-content: center;
-    align-items: center; gap: clamp(2rem, 4vw, 3.5rem);
-    flex-wrap: wrap;
-    padding-top: 3rem;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .trust__partner-label {
-    font-size: 0.55rem; font-weight: 700;
-    letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--color-text-ghost); width: 100%;
-    margin-bottom: 1rem;
-  }
-
-  .trust__partner {
-    font-family: var(--font-display);
-    font-size: clamp(1.2rem, 2vw, 1.6rem);
-    font-weight: 300; color: var(--color-text-ghost);
-    letter-spacing: 0.08em;
-    transition: color 0.3s;
-  }
-
-  .trust__partner:hover { color: var(--color-text-dim); }
-
-  /* ============================================
-     SECTION 6: EMAIL CAPTURE / WAITLIST
-     ============================================ */
-  .cta-section {
-    background: var(--color-void);
-    text-align: center;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #1a1a2e;
+    color: #e0e0e0;
     position: relative;
-    padding: clamp(6rem, 14vh, 11rem) var(--side-pad);
+    overflow: hidden;
   }
 
-  .cta-section::before {
-    content: ''; position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 60% 60% at 50% 50%, var(--color-gold-glow) 0%, transparent 70%);
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(139,92,246,0.04) 0%, transparent 50%);
     pointer-events: none;
   }
 
-  .cta-section .section__eyebrow { justify-content: center; }
-  .cta-section .section__title { margin-left: auto; margin-right: auto; max-width: 18ch; }
-  .cta-section .section__subtitle { margin-left: auto; margin-right: auto; }
-
-  .cta-form {
-    display: flex;
-    gap: 0;
-    max-width: 520px;
-    margin: 0 auto 1.5rem;
-    position: relative;
-  }
-
-  .cta-form__input {
-    flex: 1;
-    padding: 1.1rem 1.5rem;
-    background: var(--color-elevated);
-    border: 1px solid var(--color-border);
-    border-right: none;
-    border-radius: 0;
-    color: var(--color-text);
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    outline: none;
-    transition: border-color 0.3s;
-  }
-
-  .cta-form__input::placeholder { color: var(--color-text-ghost); }
-  .cta-form__input:focus { border-color: var(--color-gold); }
-
-  .cta-form__input[aria-invalid="true"] {
-    border-color: var(--color-rose);
-  }
-
-  .cta-form__btn {
-    padding: 1.1rem 2rem;
-    background: var(--color-gold);
-    color: var(--color-void);
-    font-family: var(--font-sans);
-    font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    border: 1px solid var(--color-gold);
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-    white-space: nowrap;
-  }
-
-  .cta-form__btn:hover {
-    background: var(--color-gold-light);
-  }
-
-  .cta-form__btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  .cta-form__note {
-    font-size: 0.7rem;
-    color: var(--color-text-ghost);
-    text-align: center;
-    position: relative;
-  }
-
-  .cta-form__error {
-    position: absolute;
-    bottom: -1.5rem;
-    left: 0;
-    font-size: 0.7rem;
-    color: var(--color-rose);
-    font-weight: 500;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .cta-form__error.visible {
-    opacity: 1;
-  }
-
-  .cta-form__success {
-    display: none;
-    font-size: 0.95rem;
-    color: var(--color-gold);
-    font-weight: 600;
-    margin: 1.5rem auto 0;
-    max-width: 520px;
-    position: relative;
-  }
-
-  .cta-form__success.visible {
-    display: block;
-  }
-
-  /* ============================================
-     STICKY CTA BAR
-     ============================================ */
-  .sticky-cta {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 150;
-    background: rgba(5,5,7,0.92);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid var(--color-border);
-    padding: 0.75rem var(--side-pad);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    transform: translateY(100%);
-    transition: transform 0.5s var(--ease-out-expo);
-  }
-
-  .sticky-cta.visible {
-    transform: translateY(0);
-  }
-
-  .sticky-cta__text {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: var(--color-text-dim);
-    letter-spacing: 0.05em;
-  }
-
-  .sticky-cta__text strong {
-    color: var(--color-text);
-    font-weight: 600;
-  }
-
-  .sticky-cta__btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.65rem 1.5rem;
-    background: var(--color-gold);
-    color: var(--color-void);
-    font-family: var(--font-sans);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: none;
-    transition: background 0.3s, transform 0.3s var(--ease-out-expo);
-  }
-
-  .sticky-cta__btn:hover {
-    background: var(--color-gold-light);
-    transform: translateY(-1px);
-  }
-
-  .sticky-cta__btn--ghost {
-    background: transparent;
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-  }
-
-  .sticky-cta__btn--ghost:hover {
-    background: rgba(255,255,255,0.05);
-    border-color: var(--color-border-hover);
-  }
-
-  /* ============================================
-     SECTION 7: FOOTER
-     ============================================ */
-  .footer {
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    padding: clamp(3rem, 6vh, 5rem) var(--side-pad) clamp(2rem, 4vh, 3rem);
-  }
-
-  .footer__top {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: clamp(2rem, 4vw, 4rem);
-    margin-bottom: 3rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .footer__brand-name {
-    font-family: var(--font-display);
-    font-size: 2rem; font-weight: 300;
-    letter-spacing: 0.12em;
-    margin-bottom: 1rem;
-  }
-
-  .footer__brand-name span { color: var(--color-gold); }
-
-  .footer__brand-text {
-    font-size: 0.8rem; line-height: 1.65;
-    color: var(--color-text-dim);
-    max-width: 30ch;
-  }
-
-  .footer__col-title {
-    font-size: 0.6rem; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--color-text-dim);
-    margin-bottom: 1.25rem;
-  }
-
-  .footer__links {
-    list-style: none; display: flex;
-    flex-direction: column; gap: 0.75rem;
-  }
-
-  .footer__link {
-    font-size: 0.8rem; color: var(--color-text-ghost);
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-
-  .footer__link:hover { color: var(--color-text); }
-
-  .footer__bottom {
+  .hero-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 2rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-nav-brand {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .hero-nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .hero-nav-links li {
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .hero-nav-links li:hover { color: white; }
+
+  .hero-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: end;
+    padding-bottom: 3rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: white;
+  }
+
+  .hero-subtitle {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.4);
+    max-width: 40ch;
+    line-height: 1.6;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
     flex-wrap: wrap;
+  }
+
+  .hero-cta-primary {
+    border: 2px solid rgba(255,255,255,0.6);
+    padding: 0.7rem 1.75rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: white;
+    border-radius: 4px;
+    background: transparent;
+    transition: all 0.3s var(--ease);
+  }
+
+  .hero-cta-primary:hover {
+    background: white;
+    color: #1a1a2e;
+    border-color: white;
+  }
+
+  .hero-cta-ghost {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .hero-cta-ghost:hover { color: rgba(255,255,255,0.8); }
+
+  .hero-carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 1rem;
   }
 
-  .footer__copyright {
-    font-size: 0.7rem;
-    color: var(--color-text-ghost);
+  .hero-carousel-card {
+    width: clamp(220px, 20vw, 340px);
+    aspect-ratio: 3/4;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
   }
 
-  .footer__disclaimer {
-    width: 100%;
+  .hero-carousel-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-carousel-dots {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .hero-carousel-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: background 0.3s;
+  }
+
+  .hero-carousel-dots span.active { background: rgba(255,255,255,0.7); }
+
+  .hero-floating-cards {
+    position: absolute;
+    top: 2rem;
+    right: 30%;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 2;
+  }
+
+  .hero-floating-card {
+    padding: 0.4rem 0.75rem;
     font-size: 0.6rem;
-    color: var(--color-text-ghost);
+    font-weight: 600;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.25);
+    writing-mode: vertical-lr;
+  }
+
+  @media (max-width: 900px) {
+    .hero-content { grid-template-columns: 1fr; }
+    .hero-carousel { display: none; }
+    .hero-floating-cards { display: none; }
+  }
+
+  /* =============================================
+     SECTION 2: STATS BAR
+     ============================================= */
+  .stats {
+    padding: var(--section-pad) var(--side-pad);
+    background: var(--surface);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
     text-align: center;
-    margin-top: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .stat-number {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* =============================================
+     SECTION 3: MANIFESTO
+     ============================================= */
+  .manifesto {
+    padding: var(--section-pad) var(--side-pad);
+    background: var(--dark-bg);
+    color: white;
+  }
+
+  .manifesto-text {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    font-weight: 300;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .manifesto-text em {
+    font-style: italic;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .manifesto-text strong {
+    font-weight: 700;
+    color: white;
+  }
+
+  /* =============================================
+     SECTION 4: CLIENT BRAND WALL
+     ============================================= */
+  .brand-wall {
+    padding: var(--section-pad) var(--side-pad);
+    background: var(--surface);
+  }
+
+  .brand-wall-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .brand-wall-grid {
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .brand-wall-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s var(--ease);
+  }
+
+  .brand-wall-row:hover {
+    background: var(--accent-light);
+  }
+
+  .brand-wall-name {
+    font-size: clamp(1.5rem, 4vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .brand-wall-row:hover .brand-wall-name {
+    color: var(--accent);
+  }
+
+  .brand-wall-card {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%) translateY(8px);
+    width: 220px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem;
+    opacity: 0;
+    transition: all 0.35s var(--ease);
+    z-index: 20;
+    pointer-events: none;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  }
+
+  .brand-wall-row:hover .brand-wall-card {
+    opacity: 1;
+    transform: translateY(-50%) translateY(0);
+  }
+
+  .brand-wall-card-img {
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(135deg, #e4e4e7, #d4d4d8);
+    border-radius: 6px;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+  }
+
+  .brand-wall-card-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .brand-wall-card-meta {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-top: 0.15rem;
+  }
+
+  /* =============================================
+     SECTION 5: SKILLS
+     ============================================= */
+  .skills {
+    padding: var(--section-pad) var(--side-pad);
+    background: #fafafa;
+  }
+
+  .skills-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .skills-title {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .skills-title-gap {
+    letter-spacing: 0.6em;
+    color: var(--text-ghost);
+  }
+
+  .skills-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .skill-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    background: white;
+    transition: all 0.3s var(--ease);
+    cursor: pointer;
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .skill-card-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--dark-bg);
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .skill-card-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-card-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .skill-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .skill-card-tag {
+    font-size: 0.6rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    background: #f4f4f5;
+    border-radius: 4px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* =============================================
+     SECTION 6: FULL BRAND LIST
+     ============================================= */
+  .brand-list {
+    padding: var(--section-pad) var(--side-pad);
+    background: white;
+  }
+
+  .brand-list-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .brand-list-heading {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .brand-list-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+  }
+
+  .brand-list-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    columns: 3;
+    column-gap: 2rem;
+  }
+
+  .brand-list-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    font-weight: 500;
+    break-inside: avoid;
+    cursor: pointer;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .brand-list-item:hover {
+    color: var(--accent);
+  }
+
+  .brand-list-item::after {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-left: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    vertical-align: middle;
+  }
+
+  .brand-list-item:hover::after {
+    opacity: 1;
+  }
+
+  @media (max-width: 600px) {
+    .brand-list-container { columns: 2; }
+  }
+
+  /* =============================================
+     SECTION 7: INDUSTRIES
+     ============================================= */
+  .industries {
+    padding: var(--section-pad) var(--side-pad);
+    background: var(--dark-bg);
+    color: white;
+  }
+
+  .industries-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .industries-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .industries-heading {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: white;
+    margin-top: 0.5rem;
+  }
+
+  .industries-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .industry-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+  }
+
+  .industry-row:hover {
+    padding-left: 1rem;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .industry-name {
+    font-size: clamp(1.1rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+  }
+
+  .industry-count {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.3);
+    font-weight: 500;
+  }
+
+  /* =============================================
+     SECTION 8: AWARDS & HONORS
+     ============================================= */
+  .awards {
+    padding: var(--section-pad) var(--side-pad);
+    background: var(--surface);
+  }
+
+  .awards-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .awards-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+  }
+
+  .awards-heading {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-top: 0.5rem;
+  }
+
+  .awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .award-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s var(--ease);
+    position: relative;
+    background: white;
+  }
+
+  .award-card:hover {
+    border-color: #f59e0b;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  .award-logo {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 0.75rem;
+    background: linear-gradient(135deg, #f4f4f5, #e4e4e7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+
+  .award-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .award-year {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+  }
+
+  .award-hover-card {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    width: 220px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.35s var(--ease);
+    z-index: 20;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    margin-bottom: 0.5rem;
+  }
+
+  .award-card:hover .award-hover-card {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .award-hover-img {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(135deg, #e4e4e7, #d4d4d8);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+  }
+
+  .award-hover-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .award-hover-link {
+    font-size: 0.6rem;
+    color: var(--accent);
+    margin-top: 0.2rem;
+  }
+
+  /* =============================================
+     SECTION 9: EDITORIAL ABOUT
+     ============================================= */
+  .editorial {
+    padding: var(--section-pad) var(--side-pad);
+    background: #faf9f6;
+  }
+
+  .editorial-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .editorial-portrait {
+    aspect-ratio: 3/4;
+    background: linear-gradient(145deg, #d4d4d8, #a1a1aa);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: white;
+    position: sticky;
+    top: 2rem;
+    overflow: hidden;
+  }
+
+  .editorial-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .editorial-magazine-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-ghost);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .editorial-headline {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .editorial-byline {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  .editorial-body p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .editorial-pullquote {
+    font-size: 1.3rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    border-left: 3px solid var(--text);
+    padding-left: 1.25rem;
+    margin: 1rem 0;
     line-height: 1.5;
   }
 
-  .footer__social {
-    display: flex; gap: 1rem;
+  @media (max-width: 800px) {
+    .editorial-layout { grid-template-columns: 1fr; }
+    .editorial-portrait { position: static; max-height: 400px; }
   }
 
-  .footer__social-link {
-    width: 36px; height: 36px;
-    border: 1px solid var(--color-border);
+  /* =============================================
+     SECTION 10: CITIES
+     ============================================= */
+  .cities {
+    padding: var(--section-pad) var(--side-pad);
+    background: var(--dark-bg);
+    color: white;
+  }
+
+  .cities-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .cities-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .cities-heading {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: white;
+    margin-top: 0.5rem;
+  }
+
+  .cities-list {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .city-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .city-name {
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .city-time {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .city-clock {
+    width: 36px;
+    height: 36px;
+    border: 2px solid rgba(255,255,255,0.2);
     border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--color-text-ghost);
-    text-decoration: none;
-    transition: border-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.4);
+    position: relative;
   }
 
-  .footer__social-link:hover {
-    border-color: var(--color-gold);
-    color: var(--color-gold);
+  .city-time-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    font-variant-numeric: tabular-nums;
   }
 
-  /* ============================================
-     RESPONSIVE — TABLET (768–1100px)
-     ============================================ */
-  @media (max-width: 1100px) {
-    .hero {
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr auto;
-      align-items: end;
-    }
-
-    .hero__content { grid-column: 1; grid-row: 1; padding-bottom: 2rem; }
-
-    .hero__carousel-wrap {
-      grid-column: 1; grid-row: 2;
-      padding: 0 2rem 3rem; justify-self: start;
-    }
-
-    .carousel { width: 100%; max-width: 340px; height: 360px; }
-
-    .hero__scroll { display: none; }
-    .deco__rings { display: none; }
-    .deco__corner--br { display: none; }
-
-    .features__grid { grid-template-columns: repeat(2, 1fr); }
-
-    .ingredients__layout { grid-template-columns: 1fr; }
-    .ingredients__story { position: static; margin-bottom: 3rem; }
-
-    .products__grid { grid-template-columns: repeat(2, 1fr); }
-    .products__grid .product-card:last-child {
-      grid-column: 1 / -1;
-      max-width: 50%;
-    }
-
-    .testimonials__grid { grid-template-columns: repeat(2, 1fr); }
-    .testimonials__grid .testimonial-card:last-child {
-      grid-column: 1 / -1;
-      max-width: 50%;
-    }
-
-    .footer__top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  /* =============================================
+     SECTION 11: DAMN.
+     ============================================= */
+  .damn {
+    padding: clamp(4rem, 15vh, 10rem) var(--side-pad);
+    text-align: center;
+    background: var(--darker-bg);
+    color: white;
+    position: relative;
+    overflow: hidden;
   }
 
-  /* ============================================
-     RESPONSIVE — MOBILE (<=640px)
-     ============================================ */
-  @media (max-width: 640px) {
-    body { cursor: auto; }
-    .cursor { display: none; }
-    .section-nav { display: none; }
-    .sticky-cta__text { display: none; }
-
-    .hero__title { font-size: clamp(2.8rem, 12vw, 4rem); }
-    .hero__content { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .hero__carousel-wrap { padding: 0 1.5rem 2rem; }
-    .carousel { height: 300px; }
-    .hero__cta-row { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
-    .deco__vline, .deco__hline, .deco__number { display: none; }
-
-    .features__grid { grid-template-columns: 1fr; }
-
-    .ingredients__layout { grid-template-columns: 1fr; }
-    .ingredient-card { grid-template-columns: 48px 1fr; gap: 1rem; padding: 1.5rem; }
-    .ingredient-card__icon { width: 48px; height: 48px; font-size: 1.1rem; }
-    .ingredients__stat-row { gap: 2rem; }
-
-    .products__grid { grid-template-columns: 1fr; }
-    .products__grid .product-card:last-child { max-width: 100%; }
-
-    .testimonials__grid { grid-template-columns: 1fr; }
-    .testimonials__grid .testimonial-card:last-child { max-width: 100%; }
-
-    .trust__badges { gap: 1.5rem; }
-
-    .cta-form { flex-direction: column; }
-    .cta-form__input { border-right: 1px solid var(--color-border); }
-
-    .footer__top { grid-template-columns: 1fr; gap: 2rem; }
-    .footer__bottom { flex-direction: column; align-items: flex-start; }
+  .damn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(239,68,68,0.06) 0%, transparent 70%);
+    pointer-events: none;
   }
 
-  /* ============================================
-     ACCESSIBILITY: REDUCED MOTION
-     ============================================ */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-
-    .hero__video { animation: none; transform: scale(1); }
-    .hero__grain { animation: none; }
-    .orb { opacity: 0.5; animation: none; }
-    .carousel__card { transition: none; }
-    .reveal { opacity: 1; transform: none; }
+  .damn-text {
+    font-size: clamp(4rem, 12vw, 10rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    opacity: 0.9;
+    position: relative;
   }
 
-  /* ============================================
-     FOCUS STYLES (keyboard nav)
-     ============================================ */
-  :focus-visible {
-    outline: 2px solid var(--color-gold);
-    outline-offset: 3px;
+  .damn-subtext {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    position: relative;
   }
 
-  .btn-primary:focus-visible,
-  .cta-form__btn:focus-visible {
-    outline-offset: 4px;
-    box-shadow: 0 0 0 4px var(--color-gold-glow);
+  /* =============================================
+     SECTION 12: FOOTER
+     ============================================= */
+  .footer {
+    padding: var(--section-pad) var(--side-pad);
+    background: var(--darker-bg);
+    color: white;
+    border-top: 1px solid rgba(255,255,255,0.06);
   }
 
-  /* Skip link */
-  .skip-link {
-    position: absolute; top: -100%;
-    left: 50%; transform: translateX(-50%);
-    background: var(--color-gold); color: var(--color-void);
-    padding: 0.75rem 1.5rem;
-    font-size: 0.8rem; font-weight: 700;
-    text-decoration: none; z-index: 9999;
-    border-radius: 0 0 8px 8px;
-    transition: top 0.3s;
+  .footer-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
   }
 
-  .skip-link:focus { top: 0; }
+  .footer-brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    max-width: 30ch;
+    line-height: 1.6;
+  }
+
+  .footer-cta {
+    display: inline-block;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 0.7rem 2rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: white;
+    border-radius: 4px;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s var(--ease);
+  }
+
+  .footer-cta:hover {
+    background: white;
+    color: var(--darker-bg);
+    border-color: white;
+  }
+
+  .footer-section-title {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 1rem;
+  }
+
+  .footer-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-list li {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .footer-list li:hover { color: white; }
+
+  .footer-bottom {
+    max-width: 1000px;
+    margin: 3rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.2);
+  }
+
+  @media (max-width: 700px) {
+    .footer-layout { grid-template-columns: 1fr; gap: 2rem; }
+  }
 </style>
 </head>
-
 <body>
 
-<!-- Skip to main content -->
-<a href="#features" class="skip-link">Skip to main content</a>
-
-<!-- ========== SCROLL PROGRESS ========== -->
-<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-
-<!-- ========== SECTION NAV (right side dots) ========== -->
-<nav class="section-nav" id="sectionNav" aria-label="Page sections">
-  <button class="section-nav__dot" data-section="hero" aria-label="Hero" data-hover></button>
-  <button class="section-nav__dot" data-section="features" aria-label="Benefits" data-hover></button>
-  <button class="section-nav__dot" data-section="ingredients" aria-label="Ingredients" data-hover></button>
-  <button class="section-nav__dot" data-section="products" aria-label="Products" data-hover></button>
-  <button class="section-nav__dot" data-section="testimonials" aria-label="Testimonials" data-hover></button>
-  <button class="section-nav__dot" data-section="trust" aria-label="Certifications" data-hover></button>
-  <button class="section-nav__dot" data-section="cta" aria-label="Join Waitlist" data-hover></button>
+<!-- NAV DOTS -->
+<nav class="nav-dots" aria-label="Section navigation">
+  <a href="#hero" title="Hero"></a>
+  <a href="#stats" title="Stats"></a>
+  <a href="#manifesto" title="Manifesto"></a>
+  <a href="#brand-wall" title="Brand Wall"></a>
+  <a href="#skills" title="Skills"></a>
+  <a href="#brand-list" title="Brand List"></a>
+  <a href="#industries" title="Industries"></a>
+  <a href="#awards" title="Awards"></a>
+  <a href="#editorial" title="Editorial"></a>
+  <a href="#cities" title="Cities"></a>
+  <a href="#damn" title="DAMN."></a>
+  <a href="#footer" title="Footer"></a>
 </nav>
 
-<!-- ========== CUSTOM CURSOR ========== -->
-<div class="cursor" id="cursor" aria-hidden="true">
-  <div class="cursor__dot" id="cursorDot"></div>
-  <div class="cursor__ring" id="cursorRing"></div>
-</div>
+<!-- SECTION 1: HERO -->
+<section id="hero" class="hero">
+  <nav class="hero-nav">
+    <div class="hero-nav-brand">crafted by BUBS SHAH</div>
+    <ul class="hero-nav-links">
+      <li>Work</li>
+      <li>Skills</li>
+      <li>About</li>
+      <li>Contact</li>
+    </ul>
+  </nav>
 
-<!-- ========== ANNOUNCEMENT BAR ========== -->
-<div class="announce" id="announce" role="banner">
-  <div class="announce__inner">
-    <span class="announce__pulse" aria-hidden="true"></span>
-    <span>21 Certifications. Zero Compromises.</span>
-    <a href="#ingredients" class="announce__link" data-hover>Discover the Science</a>
-  </div>
-  <button class="announce__close" id="announceClose" aria-label="Close announcement" data-hover>&times;</button>
-</div>
-
-<!-- ========== SECTION 1: HERO ========== -->
-<section class="hero" id="hero" aria-label="Hero">
-
-  <!-- Video Background -->
-  <div class="hero__video-wrap" aria-hidden="true">
-    <video class="hero__video" autoplay muted loop playsinline
-      poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'%3E%3Cdefs%3E%3CradialGradient id='g' cx='30%25' cy='70%25' r='80%25'%3E%3Cstop offset='0%25' stop-color='%23111118'/%3E%3Cstop offset='50%25' stop-color='%230a0a0f'/%3E%3Cstop offset='100%25' stop-color='%23050507'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='1920' height='1080'/%3E%3C/svg%3E">
-      <!-- <source src="hero-bg.mp4" type="video/mp4"> -->
-    </video>
-  </div>
-
-  <!-- Atmospheric layers -->
-  <div class="hero__overlay" aria-hidden="true"></div>
-  <div class="hero__atmosphere" aria-hidden="true"></div>
-  <div class="hero__grain" aria-hidden="true"></div>
-  <div class="hero__vignette" aria-hidden="true"></div>
-
-  <!-- Floating orbs -->
-  <div class="orb orb--gold" aria-hidden="true"></div>
-  <div class="orb orb--rose" aria-hidden="true"></div>
-  <div class="orb orb--blue" aria-hidden="true"></div>
-
-  <!-- Decorative elements -->
-  <svg class="deco deco__rings" viewBox="0 0 280 280" aria-hidden="true">
-    <circle cx="140" cy="140" r="130"/><circle cx="140" cy="140" r="90"/><circle cx="140" cy="140" r="50"/>
-  </svg>
-  <div class="deco deco__vline" data-parallax="0.06" aria-hidden="true"></div>
-  <div class="deco deco__hline" data-parallax="0.04" aria-hidden="true"></div>
-  <div class="deco deco__corner deco__corner--tl" aria-hidden="true"></div>
-  <div class="deco deco__corner deco__corner--br" aria-hidden="true"></div>
-  <div class="deco__number" aria-hidden="true"><span>01</span> / 04</div>
-
-  <!-- Main Content -->
-  <div class="hero__content">
-    <p class="hero__eyebrow">
-      <span class="hero__eyebrow-line" aria-hidden="true"></span>
-      <span class="hero__eyebrow-text">Diamond-Grade Saffron</span>
-    </p>
-    <h1 class="hero__title" id="heroTitle">
-      <span class="word"><span class="word-inner">The</span></span>
-      <span class="word"><span class="word-inner">Power</span></span>
-      <span class="word"><span class="word-inner">of</span></span>
-      <span class="word"><span class="word-inner"><em>Saffron</em></span></span>
-    </h1>
-
-    <!-- Rotating subheadlines -->
-    <div class="hero__rotating" id="heroRotating" aria-live="polite">
-      <p class="hero__rotating-line active" data-index="0">Clinically shown to support recovery and reduce inflammation.</p>
-      <p class="hero__rotating-line" data-index="1">Sourced from a 130-year vertically integrated supply chain.</p>
-      <p class="hero__rotating-line" data-index="2">21 certifications. Zero compromises.</p>
-      <p class="hero__rotating-line" data-index="3">The world's most precious spice, perfected for performance.</p>
-    </div>
-
-    <div class="hero__cta-row">
-      <a href="#ingredients" class="btn-primary" data-hover data-magnetic>
-        Discover the Science
-        <svg class="btn-primary__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-      <a href="#products" class="btn-ghost" data-hover>
-        <span class="btn-ghost__icon" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="5.5,2 12,7 5.5,12" fill="currentColor"/></svg>
-        </span>
-        <span class="btn-ghost__label">Shop MAHA</span>
-      </a>
-    </div>
-  </div>
-
-  <!-- 3D Carousel -->
-  <div class="hero__carousel-wrap">
-    <div class="carousel" id="carousel" role="region" aria-label="Product showcase" aria-roledescription="carousel">
-      <div class="carousel__card" data-state="active" data-index="0" role="group" aria-roledescription="slide" aria-label="Slide 1 of 4">
-        <img class="carousel__card-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='480'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%231a1a2e'/%3E%3Cstop offset='100%25' stop-color='%23292940'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='400' height='480'/%3E%3Ccircle cx='200' cy='200' r='90' fill='none' stroke='%23c9a84c' stroke-width='0.5' opacity='0.2'/%3E%3Ccircle cx='200' cy='200' r='50' fill='none' stroke='%23c9a84c' stroke-width='0.3' opacity='0.15'/%3E%3C/svg%3E" alt="Crocin Bioactive" loading="lazy">
-        <div class="carousel__card-overlay"></div>
-        <div class="carousel__card-content">
-          <p class="carousel__card-tag">Bioactive</p>
-          <h3 class="carousel__card-title">Crocin</h3>
-          <p class="carousel__card-desc">Primary saffron compound. Clinically linked to reduced inflammation and enhanced cognition.</p>
-        </div>
-      </div>
-      <div class="carousel__card" data-state="next" data-index="1" role="group" aria-roledescription="slide" aria-label="Slide 2 of 4">
-        <img class="carousel__card-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='480'%3E%3Cdefs%3E%3ClinearGradient id='b' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%231e1510'/%3E%3Cstop offset='100%25' stop-color='%23302418'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23b)' width='400' height='480'/%3E%3Cline x1='120' y1='160' x2='280' y2='320' stroke='%23c9a84c' stroke-width='0.5' opacity='0.15'/%3E%3Cline x1='280' y1='160' x2='120' y2='320' stroke='%23c9a84c' stroke-width='0.5' opacity='0.15'/%3E%3C/svg%3E" alt="Safranal Extract" loading="lazy">
-        <div class="carousel__card-overlay"></div>
-        <div class="carousel__card-content">
-          <p class="carousel__card-tag">Calming</p>
-          <h3 class="carousel__card-title">Safranal</h3>
-          <p class="carousel__card-desc">Supports sleep quality and stress response without sedation.</p>
-        </div>
-      </div>
-      <div class="carousel__card" data-state="back" data-index="2" role="group" aria-roledescription="slide" aria-label="Slide 3 of 4">
-        <img class="carousel__card-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='480'%3E%3Cdefs%3E%3ClinearGradient id='c' x1='0.5' y1='0' x2='0.5' y2='1'%3E%3Cstop offset='0%25' stop-color='%23101820'/%3E%3Cstop offset='100%25' stop-color='%231a2830'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23c)' width='400' height='480'/%3E%3Crect x='150' y='160' width='100' height='160' rx='6' fill='none' stroke='%23c9a84c' stroke-width='0.5' opacity='0.15'/%3E%3C/svg%3E" alt="Crocetin Antioxidant" loading="lazy">
-        <div class="carousel__card-overlay"></div>
-        <div class="carousel__card-content">
-          <p class="carousel__card-tag">Recovery</p>
-          <h3 class="carousel__card-title">Crocetin</h3>
-          <p class="carousel__card-desc">Potent carotenoid for cardiovascular support and exercise recovery.</p>
-        </div>
-      </div>
-      <div class="carousel__card" data-state="hidden" data-index="3" role="group" aria-roledescription="slide" aria-label="Slide 4 of 4">
-        <img class="carousel__card-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='480'%3E%3Cdefs%3E%3ClinearGradient id='d' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23180d18'/%3E%3Cstop offset='100%25' stop-color='%23251525'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23d)' width='400' height='480'/%3E%3Cellipse cx='200' cy='240' rx='65' ry='95' fill='none' stroke='%23c9a84c' stroke-width='0.5' opacity='0.15'/%3E%3C/svg%3E" alt="130-Year Heritage" loading="lazy">
-        <div class="carousel__card-overlay"></div>
-        <div class="carousel__card-content">
-          <p class="carousel__card-tag">Heritage</p>
-          <h3 class="carousel__card-title">130 Years</h3>
-          <p class="carousel__card-desc">Vertically integrated supply chain. From our fields to your hands.</p>
-        </div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Available Now &mdash; 30+ Years Experience</div>
+      <h1 class="hero-title">REMEMBER<br>THE NAME</h1>
+      <p class="hero-subtitle">Design leader. Brand strategist. Fortune 500 builder. 150+ honors across 29 industries.</p>
+      <div class="hero-ctas">
+        <button class="hero-cta-primary">Explore the Work</button>
+        <span class="hero-cta-ghost">&#9654; Watch Reel</span>
       </div>
     </div>
-    <div class="carousel__nav" id="carouselNav" role="tablist" aria-label="Carousel navigation">
-      <div class="carousel__nav-item active" data-slide="0" role="tab" aria-selected="true" aria-label="Slide 1" tabindex="0"><div class="carousel__nav-fill"></div></div>
-      <div class="carousel__nav-item" data-slide="1" role="tab" aria-selected="false" aria-label="Slide 2" tabindex="-1"><div class="carousel__nav-fill"></div></div>
-      <div class="carousel__nav-item" data-slide="2" role="tab" aria-selected="false" aria-label="Slide 3" tabindex="-1"><div class="carousel__nav-fill"></div></div>
-      <div class="carousel__nav-item" data-slide="3" role="tab" aria-selected="false" aria-label="Slide 4" tabindex="-1"><div class="carousel__nav-fill"></div></div>
+
+    <div class="hero-carousel">
+      <div class="hero-carousel-card">
+        <span style="position:relative;z-index:1;">Portfolio Image</span>
+      </div>
+      <div class="hero-carousel-dots">
+        <span class="active"></span><span></span><span></span><span></span>
+      </div>
     </div>
   </div>
 
-  <div class="hero__scroll" aria-hidden="true">
-    <span class="hero__scroll-text">Scroll</span>
-    <div class="hero__scroll-line"></div>
+  <div class="hero-floating-cards">
+    <span class="hero-floating-card">Making</span>
+    <span class="hero-floating-card">Breaking</span>
+    <span class="hero-floating-card">Defining</span>
+    <span class="hero-floating-card">Industries</span>
   </div>
 
+  <span class="hero-scroll">SCROLL</span>
 </section>
 
-<!-- ========== SECTION 2: FEATURES / BENEFITS ========== -->
-<section class="section features" id="features" aria-labelledby="features-title">
-  <div class="reveal">
-    <p class="section__eyebrow">
-      <span class="section__eyebrow-line" aria-hidden="true"></span>
-      Why MAHA
-    </p>
-  </div>
-  <h2 class="section__title reveal reveal-delay-1" id="features-title">
-    Wellness Without <em>Compromise</em>
-  </h2>
-  <p class="section__subtitle reveal reveal-delay-2">
-    Every ingredient is third-party tested, every formula is research-backed,
-    and every batch is traceable from source to shelf.
-  </p>
-
-  <div class="features__grid">
-    <div class="feature-card reveal reveal-delay-2" data-hover>
-      <div class="feature-card__icon" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="1"/>
-          <path d="M24 14v10l7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <h3 class="feature-card__title">Recovery</h3>
-      <p class="feature-card__text">
-        Accelerate post-workout recovery with bioactive crocin and safranal.
-      </p>
-    </div>
-
-    <div class="feature-card reveal reveal-delay-3" data-hover>
-      <div class="feature-card__icon" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <path d="M14 34V20l10-8 10 8v14H14z" stroke="currentColor" stroke-width="1"/>
-          <circle cx="24" cy="26" r="4" stroke="currentColor" stroke-width="1"/>
-          <path d="M24 22v-4M24 30v4M20 26h-4M28 26h4" stroke="currentColor" stroke-width="0.75" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <h3 class="feature-card__title">Inflammation</h3>
-      <p class="feature-card__text">
-        Reduce chronic inflammation at the cellular level &mdash; clinically validated.
-      </p>
-    </div>
-
-    <div class="feature-card reveal reveal-delay-4" data-hover>
-      <div class="feature-card__icon" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <path d="M16 36c0-6 3-10 8-12 5 2 8 6 8 12" stroke="currentColor" stroke-width="1" fill="none"/>
-          <circle cx="24" cy="18" r="6" stroke="currentColor" stroke-width="1" fill="none"/>
-          <path d="M24 12v-4M18 14l-2-3M30 14l2-3" stroke="currentColor" stroke-width="0.75" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <h3 class="feature-card__title">Sleep</h3>
-      <p class="feature-card__text">
-        Fall asleep faster. Stay asleep longer. Wake up sharper.
-      </p>
-    </div>
-
-    <div class="feature-card reveal reveal-delay-3" data-hover>
-      <div class="feature-card__icon" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="1" fill="none"/>
-          <circle cx="24" cy="24" r="4" stroke="currentColor" stroke-width="1" fill="none"/>
-          <path d="M24 8v4M24 36v4M8 24h4M36 24h4" stroke="currentColor" stroke-width="0.75" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <h3 class="feature-card__title">Mood &amp; Focus</h3>
-      <p class="feature-card__text">
-        Elevate mental clarity and calm without stimulants or crashes.
-      </p>
-    </div>
-
-    <div class="feature-card reveal reveal-delay-4" data-hover>
-      <div class="feature-card__icon" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="1"/>
-          <path d="M20 24l3 3 5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <h3 class="feature-card__title">Purity</h3>
-      <p class="feature-card__text">
-        Every batch tested. Every claim verified. 21 certifications and counting.
-      </p>
-    </div>
-
-    <div class="feature-card reveal reveal-delay-5" data-hover>
-      <div class="feature-card__icon" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <rect x="8" y="16" width="32" height="20" rx="4" stroke="currentColor" stroke-width="1"/>
-          <path d="M16 16V12a8 8 0 0116 0v4" stroke="currentColor" stroke-width="1"/>
-          <circle cx="24" cy="26" r="3" stroke="currentColor" stroke-width="1"/>
-        </svg>
-      </div>
-      <h3 class="feature-card__title">Heritage</h3>
-      <p class="feature-card__text">
-        130 years of saffron mastery. From our fields to your hands.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ========== SECTION 3: INGREDIENTS STORY ========== -->
-<section class="section ingredients" id="ingredients" aria-labelledby="ingredients-title">
-  <div class="ingredients__layout">
-    <div class="ingredients__story">
-      <div class="reveal">
-        <p class="section__eyebrow">
-          <span class="section__eyebrow-line" aria-hidden="true"></span>
-          The Science
-        </p>
-      </div>
-      <h2 class="section__title reveal reveal-delay-1" id="ingredients-title">
-        The Science Behind the <em>Spice</em>
-      </h2>
-      <p class="section__subtitle reveal reveal-delay-2">
-        Saffron has been revered for centuries. MAHA starts where tradition ends &mdash;
-        with rigorous clinical research, pharmaceutical-grade extraction, and the highest
-        potency saffron available anywhere in the world.
-      </p>
-      <div class="ingredients__stat-row reveal reveal-delay-3">
-        <div class="stat">
-          <div class="stat__number">200+</div>
-          <div class="stat__label">Peer-Reviewed Studies</div>
-        </div>
-        <div class="stat">
-          <div class="stat__number">3</div>
-          <div class="stat__label">Key Bioactives</div>
-        </div>
-        <div class="stat">
-          <div class="stat__number">0</div>
-          <div class="stat__label">Artificial Additives</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="ingredients__cards">
-      <div class="ingredient-card reveal reveal-delay-1" data-hover>
-        <div class="ingredient-card__icon" aria-hidden="true">Cr</div>
-        <div>
-          <h3 class="ingredient-card__name">Crocin</h3>
-          <p class="ingredient-card__desc">The primary bioactive compound in saffron. Peer-reviewed research links crocin to reduced inflammation markers, improved mood regulation, and enhanced cognitive function. MAHA delivers a standardized dose in every serving.</p>
-          <p class="ingredient-card__research">
-            <span class="ingredient-card__research-dot" aria-hidden="true"></span>
-            Primary bioactive — standardized dose
-          </p>
-        </div>
-      </div>
-
-      <div class="ingredient-card reveal reveal-delay-2" data-hover>
-        <div class="ingredient-card__icon" aria-hidden="true">Sf</div>
-        <div>
-          <h3 class="ingredient-card__name">Safranal</h3>
-          <p class="ingredient-card__desc">Responsible for saffron's distinctive aroma &mdash; and its calming properties. Studies show safranal supports sleep quality and stress response without sedation.</p>
-          <p class="ingredient-card__research">
-            <span class="ingredient-card__research-dot" aria-hidden="true"></span>
-            Sleep &amp; stress support
-          </p>
-        </div>
-      </div>
-
-      <div class="ingredient-card reveal reveal-delay-3" data-hover>
-        <div class="ingredient-card__icon" aria-hidden="true">Ct</div>
-        <div>
-          <h3 class="ingredient-card__name">Crocetin</h3>
-          <p class="ingredient-card__desc">A potent carotenoid with antioxidant activity. Emerging research connects crocetin to cardiovascular support and exercise recovery. MAHA preserves crocetin integrity through cold-extraction processing.</p>
-          <p class="ingredient-card__research">
-            <span class="ingredient-card__research-dot" aria-hidden="true"></span>
-            Cold-extracted for maximum potency
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== SECTION 3.5: PRODUCT TIERS ========== -->
-<section class="section products" id="products" aria-labelledby="products-title">
-  <div class="reveal">
-    <p class="section__eyebrow">
-      <span class="section__eyebrow-line" aria-hidden="true"></span>
-      Find Your Format
-    </p>
-  </div>
-  <h2 class="section__title reveal reveal-delay-1" id="products-title">
-    Three Ways to <em>Experience</em> MAHA
-  </h2>
-  <p class="section__subtitle reveal reveal-delay-2">
-    From daily precision dosing to performance-scale supply. Same uncompromising quality in every format.
-  </p>
-
-  <div class="products__grid">
-    <div class="product-card reveal reveal-delay-2" data-hover>
-      <p class="product-card__volume">100mL</p>
-      <h3 class="product-card__name">MAHA Booster</h3>
-      <p class="product-card__desc">The daily essential. A concentrated saffron shot designed for precision dosing. One cap. Full potency.</p>
-    </div>
-
-    <div class="product-card reveal reveal-delay-3" data-hover>
-      <p class="product-card__volume">250mL</p>
-      <h3 class="product-card__name">MAHA Vitro</h3>
-      <p class="product-card__desc">Your everyday ritual. Smooth, versatile, and ready to mix into any routine. More volume, same uncompromising quality.</p>
-    </div>
-
-    <div class="product-card reveal reveal-delay-4" data-hover>
-      <p class="product-card__volume">1L</p>
-      <h3 class="product-card__name">MAHA Mixer</h3>
-      <p class="product-card__desc">The performance format. Built for athletes, households, and anyone who refuses to run out. Premium saffron at scale.</p>
-    </div>
-  </div>
-
-  <p class="products__flavor-note reveal reveal-delay-5">
-    Four signature flavors. Each one crafted to complement saffron's natural complexity.
-  </p>
-</section>
-
-<!-- ========== SECTION 4: TESTIMONIALS ========== -->
-<section class="section testimonials" id="testimonials" aria-labelledby="testimonials-title">
-  <div class="reveal">
-    <p class="section__eyebrow">
-      <span class="section__eyebrow-line" aria-hidden="true"></span>
-      Real Results
-    </p>
-  </div>
-  <h2 class="section__title reveal reveal-delay-1" id="testimonials-title">
-    What People Are <em>Saying</em>
-  </h2>
-  <p class="section__subtitle reveal reveal-delay-2">
-    From researchers to athletes to everyday optimizers &mdash; hear how MAHA fits into real routines.
-  </p>
-
-  <div class="testimonials__grid">
-    <div class="testimonial-card reveal reveal-delay-2" data-hover>
-      <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-      </div>
-      <blockquote class="testimonial-card__quote">
-        "I spent weeks reading the studies before I tried MAHA. The results matched the research. No proprietary blend nonsense &mdash; just published science I can verify."
-      </blockquote>
-      <div class="testimonial-card__author">
-        <div class="testimonial-card__avatar">DR</div>
-        <div>
-          <div class="testimonial-card__name">Dr. Rachel Kim</div>
-          <div class="testimonial-card__detail">Nutritional Researcher</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card reveal reveal-delay-3" data-hover>
-      <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-      </div>
-      <blockquote class="testimonial-card__quote">
-        "Recovery used to take me three days. With MAHA, I'm back at it in one. The saffron extract is a game-changer for endurance athletes."
-      </blockquote>
-      <div class="testimonial-card__author">
-        <div class="testimonial-card__avatar">MJ</div>
-        <div>
-          <div class="testimonial-card__name">Marcus Johnson</div>
-          <div class="testimonial-card__detail">Endurance Athlete</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card reveal reveal-delay-4" data-hover>
-      <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 9,5 13,5.5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5.5 5,5"/></svg>
-      </div>
-      <blockquote class="testimonial-card__quote">
-        "I don't trust wellness brands. MAHA earned it &mdash; 21 certifications, transparent sourcing, and the QR traceability on each bottle sealed it for me."
-      </blockquote>
-      <div class="testimonial-card__author">
-        <div class="testimonial-card__avatar">SP</div>
-        <div>
-          <div class="testimonial-card__name">Sarah Patel</div>
-          <div class="testimonial-card__detail">Biohacker &amp; Skeptic</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== SECTION 5: CERTIFICATIONS & TRUST ========== -->
-<section class="section trust" id="trust" aria-labelledby="trust-title">
-  <div class="reveal">
-    <p class="section__eyebrow">
-      <span class="section__eyebrow-line" aria-hidden="true"></span>
-      Verified Quality
-    </p>
-  </div>
-  <h2 class="section__title reveal reveal-delay-1" id="trust-title">
-    Certified. Tested. <em>Trusted.</em>
-  </h2>
-  <p class="section__subtitle reveal reveal-delay-2">
-    MAHA holds 21 certifications across purity, safety, and ethical sourcing.
-    We earned every one of them &mdash; because the people who choose MAHA
-    don't take claims at face value.
-  </p>
-
-  <div class="trust__badges reveal reveal-delay-3">
-    <div class="trust-badge" data-hover>
-      <div class="trust-badge__icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <path d="M14 3l3 6 6.5 1-4.7 4.6 1.1 6.5L14 18l-5.9 3.1 1.1-6.5L4.5 10l6.5-1L14 3z" stroke="#c9a84c" stroke-width="1" fill="none"/>
-        </svg>
-      </div>
-      <span class="trust-badge__label">GMP Certified</span>
-    </div>
-
-    <div class="trust-badge" data-hover>
-      <div class="trust-badge__icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <circle cx="14" cy="14" r="10" stroke="#c9a84c" stroke-width="1"/>
-          <path d="M10 14l3 3 5-6" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <span class="trust-badge__label">Third-Party Tested</span>
-    </div>
-
-    <div class="trust-badge" data-hover>
-      <div class="trust-badge__icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <rect x="6" y="6" width="16" height="16" rx="3" stroke="#c9a84c" stroke-width="1"/>
-          <path d="M10 14h8M14 10v8" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <span class="trust-badge__label">Non-GMO Project</span>
-    </div>
-
-    <div class="trust-badge" data-hover>
-      <div class="trust-badge__icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <path d="M14 4c-3 4-8 6-8 12a8 8 0 0016 0c0-6-5-8-8-12z" stroke="#c9a84c" stroke-width="1" fill="none"/>
-        </svg>
-      </div>
-      <span class="trust-badge__label">Vegan Certified</span>
-    </div>
-
-    <div class="trust-badge" data-hover>
-      <div class="trust-badge__icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <path d="M14 4L4 10v8l10 6 10-6v-8L14 4z" stroke="#c9a84c" stroke-width="1" fill="none"/>
-          <path d="M14 10v8" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/>
-          <circle cx="14" cy="21" r="1" fill="#c9a84c"/>
-        </svg>
-      </div>
-      <span class="trust-badge__label">NSF Certified</span>
-    </div>
-  </div>
-
-  <div class="trust__partners reveal reveal-delay-4">
-    <span class="trust__partner-label">Available at retailers who curate, not just stock</span>
-    <span class="trust__partner">Citarella</span>
-    <span class="trust__partner">Central Market</span>
-    <span class="trust__partner">Instacart</span>
-  </div>
-</section>
-
-<!-- ========== SECTION 6: EMAIL CAPTURE / WAITLIST ========== -->
-<section class="section cta-section" id="cta" aria-labelledby="cta-title">
-  <div class="reveal">
-    <p class="section__eyebrow">
-      <span class="section__eyebrow-line" aria-hidden="true"></span>
-      Early Access
-    </p>
-  </div>
-  <h2 class="section__title reveal reveal-delay-1" id="cta-title">
-    Be First in <em>Line</em>
-  </h2>
-  <p class="section__subtitle reveal reveal-delay-2">
-    MAHA is redefining what a saffron supplement can do. Join the waitlist for
-    early access, member-only pricing, and the latest research updates &mdash;
-    delivered without the hype.
-  </p>
-  <form class="cta-form reveal reveal-delay-3" id="waitlistForm" aria-label="Join waitlist" novalidate>
-    <label for="waitlistEmail" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Email address</label>
-    <input type="email" id="waitlistEmail" class="cta-form__input" placeholder="Enter your email" required autocomplete="email" aria-describedby="waitlistError">
-    <button type="submit" class="cta-form__btn" id="waitlistBtn" data-hover>Join the Waitlist</button>
-    <span class="cta-form__error" id="waitlistError" role="alert"></span>
-  </form>
-  <p class="cta-form__note reveal reveal-delay-4">No spam. No hype. Just science and early access.</p>
-  <p class="cta-form__success" id="waitlistSuccess">You're on the list. We'll be in touch.</p>
-</section>
-
-<!-- ========== STICKY CTA BAR ========== -->
-<div class="sticky-cta" id="stickyCta" aria-label="Persistent call to action">
-  <span class="sticky-cta__text">Experience <strong>diamond-grade saffron</strong></span>
-  <a href="#products" class="sticky-cta__btn sticky-cta__btn--ghost" data-hover>Shop MAHA</a>
-  <a href="#cta" class="sticky-cta__btn" data-hover>Join the Waitlist</a>
-</div>
-
-<!-- ========== SECTION 7: FOOTER ========== -->
-<footer class="footer" id="footer" role="contentinfo">
-  <div class="footer__top">
+<!-- SECTION 2: STATS BAR -->
+<section id="stats" class="stats">
+  <div class="stats-grid">
     <div>
-      <div class="footer__brand-name"><span>M</span>AHA</div>
-      <p class="footer__brand-text">
-        Rooted in Science. Refined by Nature. 130 years of purity,
-        one uncompromising standard.
-      </p>
+      <div class="stat-number">30+</div>
+      <div class="stat-label">Years as a<br>Design Leader</div>
     </div>
     <div>
-      <h3 class="footer__col-title">Product</h3>
-      <ul class="footer__links">
-        <li><a href="#ingredients" class="footer__link" data-hover>Ingredients</a></li>
-        <li><a href="#" class="footer__link" data-hover>Research</a></li>
-        <li><a href="#" class="footer__link" data-hover>Lab Reports</a></li>
-        <li><a href="#" class="footer__link" data-hover>Sourcing</a></li>
+      <div class="stat-number">150+</div>
+      <div class="stat-label">Honors &<br>Awards</div>
+    </div>
+    <div>
+      <div class="stat-number">$10B</div>
+      <div class="stat-label">Revenue<br>Impact</div>
+    </div>
+    <div>
+      <div class="stat-number">29</div>
+      <div class="stat-label">Industries<br>Transformed</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: MANIFESTO -->
+<section id="manifesto" class="manifesto">
+  <div class="manifesto-text">
+    <em>I don't make websites</em><br>
+    <em>or design business cards</em><br>
+    <em>and I won't make you a logo</em><br><br>
+    <strong>I make Fortune 500 brands</strong><br>
+    <strong>I change industries</strong><br>
+    <strong>I make industries</strong>
+  </div>
+</section>
+
+<!-- SECTION 4: CLIENT BRAND WALL -->
+<section id="brand-wall" class="brand-wall">
+  <div class="brand-wall-eyebrow">Selected Clients</div>
+  <div class="brand-wall-grid">
+
+    <div class="brand-wall-row">
+      <span class="brand-wall-name">Macy's</span>
+      <div class="brand-wall-card">
+        <div class="brand-wall-card-img">Project Visual</div>
+        <div class="brand-wall-card-title">Holiday Campaign Rebrand</div>
+        <div class="brand-wall-card-meta">Brand Strategy &middot; $2.1B impact &rarr; Case Study</div>
+      </div>
+    </div>
+
+    <div class="brand-wall-row">
+      <span class="brand-wall-name">Carnival Cruise</span>
+      <div class="brand-wall-card">
+        <div class="brand-wall-card-img">Project Visual</div>
+        <div class="brand-wall-card-title">Digital Experience</div>
+        <div class="brand-wall-card-meta">Product Design &middot; UX Overhaul</div>
+      </div>
+    </div>
+
+    <div class="brand-wall-row">
+      <span class="brand-wall-name">National Geographic</span>
+      <div class="brand-wall-card">
+        <div class="brand-wall-card-img">Project Visual</div>
+        <div class="brand-wall-card-title">Visual Identity System</div>
+        <div class="brand-wall-card-meta">Branding &middot; Global Launch</div>
+      </div>
+    </div>
+
+    <div class="brand-wall-row">
+      <span class="brand-wall-name">Apple</span>
+      <div class="brand-wall-card">
+        <div class="brand-wall-card-img">Project Visual</div>
+        <div class="brand-wall-card-title">Retail Experience</div>
+        <div class="brand-wall-card-meta">Design Direction</div>
+      </div>
+    </div>
+
+    <div class="brand-wall-row">
+      <span class="brand-wall-name">Rolex</span>
+      <div class="brand-wall-card">
+        <div class="brand-wall-card-img">Project Visual</div>
+        <div class="brand-wall-card-title">Digital Presence</div>
+        <div class="brand-wall-card-meta">Brand Design &middot; Luxury Market</div>
+      </div>
+    </div>
+
+    <div class="brand-wall-row">
+      <span class="brand-wall-name">Disney</span>
+      <div class="brand-wall-card">
+        <div class="brand-wall-card-img">Project Visual</div>
+        <div class="brand-wall-card-title">Experience Platform</div>
+        <div class="brand-wall-card-meta">Product &middot; Entertainment</div>
+      </div>
+    </div>
+
+    <div class="brand-wall-row">
+      <span class="brand-wall-name">Snapchat</span>
+      <div class="brand-wall-card">
+        <div class="brand-wall-card-img">Project Visual</div>
+        <div class="brand-wall-card-title">Campaign Creative</div>
+        <div class="brand-wall-card-meta">Social &middot; Creative Direction</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 5: SKILLS -->
+<section id="skills" class="skills">
+  <div class="skills-header">
+    <div class="skills-title">SK<span class="skills-title-gap">&nbsp;&nbsp;&nbsp;&nbsp;</span>LLS</div>
+    <p class="skills-subtitle">The missing "I" = you, the viewer</p>
+  </div>
+
+  <div class="skills-grid">
+
+    <div class="skill-card">
+      <div class="skill-card-icon">AI</div>
+      <div class="skill-card-name">Artificial Intelligence</div>
+      <div class="skill-card-desc">Leveraging AI as a creative multiplier &mdash; from generative workflows to intelligent product features.</div>
+      <div class="skill-card-tags">
+        <span class="skill-card-tag">Prompt Engineering</span>
+        <span class="skill-card-tag">Generative AI</span>
+        <span class="skill-card-tag">AI-Assisted Design</span>
+        <span class="skill-card-tag">ML Integration</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-card-icon">VIS</div>
+      <div class="skill-card-name">Visual Design</div>
+      <div class="skill-card-desc">Pixel-perfect execution across brand systems, campaigns, and digital products at global scale.</div>
+      <div class="skill-card-tags">
+        <span class="skill-card-tag">UI Design</span>
+        <span class="skill-card-tag">Typography</span>
+        <span class="skill-card-tag">Motion</span>
+        <span class="skill-card-tag">Art Direction</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-card-icon">BRD</div>
+      <div class="skill-card-name">Branding</div>
+      <div class="skill-card-desc">Building brand systems that Fortune 500 companies trust to represent billions in market value.</div>
+      <div class="skill-card-tags">
+        <span class="skill-card-tag">Brand Strategy</span>
+        <span class="skill-card-tag">Identity Systems</span>
+        <span class="skill-card-tag">Brand Architecture</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-card-icon">LDR</div>
+      <div class="skill-card-name">Leadership</div>
+      <div class="skill-card-desc">Building and leading creative teams that ship award-winning work across enterprise organizations.</div>
+      <div class="skill-card-tags">
+        <span class="skill-card-tag">Team Building</span>
+        <span class="skill-card-tag">Design Ops</span>
+        <span class="skill-card-tag">C-Suite Comms</span>
+        <span class="skill-card-tag">Mentorship</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-card-icon">PRD</div>
+      <div class="skill-card-name">Product</div>
+      <div class="skill-card-desc">End-to-end product thinking &mdash; from discovery research through launch and growth optimization.</div>
+      <div class="skill-card-tags">
+        <span class="skill-card-tag">UX Strategy</span>
+        <span class="skill-card-tag">Product Design</span>
+        <span class="skill-card-tag">User Research</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-card-icon">DEV</div>
+      <div class="skill-card-name">Development</div>
+      <div class="skill-card-desc">Bridging design and engineering through vibe coding, prototyping, and hands-on front-end work.</div>
+      <div class="skill-card-tags">
+        <span class="skill-card-tag">Front-End</span>
+        <span class="skill-card-tag">Prototyping</span>
+        <span class="skill-card-tag">Vibe Coding</span>
+        <span class="skill-card-tag">CSS/JS</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-card-icon">3D</div>
+      <div class="skill-card-name">3D & Immersive</div>
+      <div class="skill-card-desc">Creating dimensional experiences &mdash; from 3D renders and spatial design to AR/VR explorations.</div>
+      <div class="skill-card-tags">
+        <span class="skill-card-tag">3D Modeling</span>
+        <span class="skill-card-tag">Spatial Design</span>
+        <span class="skill-card-tag">AR/VR</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 6: FULL BRAND LIST -->
+<section id="brand-list" class="brand-list">
+  <div class="brand-list-header">
+    <div class="brand-list-heading">Brands & Companies</div>
+    <p class="brand-list-subtitle">The full roster &mdash; hover for project details</p>
+  </div>
+
+  <div class="brand-list-container">
+    <div class="brand-list-item">Macy's</div>
+    <div class="brand-list-item">Carnival Cruise</div>
+    <div class="brand-list-item">National Geographic</div>
+    <div class="brand-list-item">Apple</div>
+    <div class="brand-list-item">Rolex</div>
+    <div class="brand-list-item">Disney</div>
+    <div class="brand-list-item">Snapchat</div>
+    <div class="brand-list-item">Geo</div>
+    <div class="brand-list-item">Samsung</div>
+    <div class="brand-list-item">Toyota</div>
+    <div class="brand-list-item">AT&amp;T</div>
+    <div class="brand-list-item">Nike</div>
+    <div class="brand-list-item">Coca-Cola</div>
+    <div class="brand-list-item">Microsoft</div>
+    <div class="brand-list-item">Amazon</div>
+    <div class="brand-list-item">HBO</div>
+    <div class="brand-list-item">Netflix</div>
+    <div class="brand-list-item">Spotify</div>
+  </div>
+</section>
+
+<!-- SECTION 7: INDUSTRIES -->
+<section id="industries" class="industries">
+  <div class="industries-header">
+    <div class="industries-eyebrow">29 Industries</div>
+    <div class="industries-heading">Industries Transformed</div>
+  </div>
+
+  <div class="industries-list">
+    <div class="industry-row">
+      <span class="industry-name">Technology</span>
+      <span class="industry-count">12 projects</span>
+    </div>
+    <div class="industry-row">
+      <span class="industry-name">Entertainment</span>
+      <span class="industry-count">8 projects</span>
+    </div>
+    <div class="industry-row">
+      <span class="industry-name">Fashion & Luxury</span>
+      <span class="industry-count">7 projects</span>
+    </div>
+    <div class="industry-row">
+      <span class="industry-name">Hospitality</span>
+      <span class="industry-count">6 projects</span>
+    </div>
+    <div class="industry-row">
+      <span class="industry-name">Finance</span>
+      <span class="industry-count">5 projects</span>
+    </div>
+    <div class="industry-row">
+      <span class="industry-name">Healthcare</span>
+      <span class="industry-count">4 projects</span>
+    </div>
+    <div class="industry-row">
+      <span class="industry-name">Automotive</span>
+      <span class="industry-count">4 projects</span>
+    </div>
+    <div class="industry-row">
+      <span class="industry-name">Real Estate</span>
+      <span class="industry-count">3 projects</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: AWARDS & HONORS -->
+<section id="awards" class="awards">
+  <div class="awards-header">
+    <div class="awards-eyebrow">Recognized By</div>
+    <div class="awards-heading">Awards & Honors</div>
+  </div>
+
+  <div class="awards-grid">
+
+    <div class="award-card">
+      <div class="award-hover-card">
+        <div class="award-hover-img">Project Screenshot</div>
+        <div class="award-hover-title">Macy's Holiday &mdash; Gold</div>
+        <div class="award-hover-link">View Project &rarr;</div>
+      </div>
+      <div class="award-logo">CL</div>
+      <div class="award-name">Cannes Lions</div>
+      <div class="award-year">2019</div>
+    </div>
+
+    <div class="award-card">
+      <div class="award-hover-card">
+        <div class="award-hover-img">Project Screenshot</div>
+        <div class="award-hover-title">NatGeo Rebrand &mdash; Best of Show</div>
+        <div class="award-hover-link">View Project &rarr;</div>
+      </div>
+      <div class="award-logo">W</div>
+      <div class="award-name">Webby Awards</div>
+      <div class="award-year">2021</div>
+    </div>
+
+    <div class="award-card">
+      <div class="award-hover-card">
+        <div class="award-hover-img">Project Screenshot</div>
+        <div class="award-hover-title">Disney+ Launch Campaign</div>
+        <div class="award-hover-link">View Project &rarr;</div>
+      </div>
+      <div class="award-logo">ADC</div>
+      <div class="award-name">ADC Gold</div>
+      <div class="award-year">2020</div>
+    </div>
+
+    <div class="award-card">
+      <div class="award-hover-card">
+        <div class="award-hover-img">Project Screenshot</div>
+        <div class="award-hover-title">Rolex Digital &mdash; Excellence</div>
+        <div class="award-hover-link">View Project &rarr;</div>
+      </div>
+      <div class="award-logo">D&amp;AD</div>
+      <div class="award-name">D&amp;AD</div>
+      <div class="award-year">2022</div>
+    </div>
+
+    <div class="award-card">
+      <div class="award-hover-card">
+        <div class="award-hover-img">Project Screenshot</div>
+        <div class="award-hover-title">Snapchat AR Experience</div>
+        <div class="award-hover-link">View Project &rarr;</div>
+      </div>
+      <div class="award-logo">AW</div>
+      <div class="award-name">Awwwards SOTD</div>
+      <div class="award-year">2023</div>
+    </div>
+
+    <div class="award-card">
+      <div class="award-hover-card">
+        <div class="award-hover-img">Project Screenshot</div>
+        <div class="award-hover-title">Samsung Galaxy Launch</div>
+        <div class="award-hover-link">View Project &rarr;</div>
+      </div>
+      <div class="award-logo">FWA</div>
+      <div class="award-name">FWA</div>
+      <div class="award-year">2018</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 9: EDITORIAL ABOUT -->
+<section id="editorial" class="editorial">
+  <div class="editorial-layout">
+
+    <div class="editorial-portrait">
+      Full Portrait Photo
+    </div>
+
+    <div class="editorial-content">
+      <div class="editorial-magazine-label">Profile &mdash; Fast Company Style</div>
+      <h2 class="editorial-headline">The Designer Who Builds Industries, Not Just Brands</h2>
+      <div class="editorial-byline">As told to [Publication] &mdash; An interview with Bubs Shah</div>
+
+      <div class="editorial-body">
+        <p>Lorem ipsum dolor sit amet &mdash; placeholder for the editorial narrative. This section should read like a feature profile in Fast Company, Fortune, or Wired. First-person voice mixed with third-person editorial framing.</p>
+
+        <div class="editorial-pullquote">
+          &ldquo;I don't design for awards. I design for the boardroom conversation six months later when the CEO says revenue moved.&rdquo;
+        </div>
+
+        <p>More editorial body copy here. This is the personal story &mdash; the 30-year arc, the turning points, the philosophy. Keep it tight, keep it editorial, keep it quotable.</p>
+
+        <p>Final paragraph wraps with forward-looking positioning &mdash; what's next, what matters now, why you should reach out.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 10: CITIES -->
+<section id="cities" class="cities">
+  <div class="cities-header">
+    <div class="cities-eyebrow">Global Perspective</div>
+    <div class="cities-heading">Where the Work Lives</div>
+  </div>
+
+  <div class="cities-list">
+    <div class="city-row">
+      <span class="city-name">Los Angeles</span>
+      <div class="city-time">
+        <div class="city-clock" data-tz="America/Los_Angeles"></div>
+        <span class="city-time-text" data-tz="America/Los_Angeles"></span>
+      </div>
+    </div>
+    <div class="city-row">
+      <span class="city-name">New York</span>
+      <div class="city-time">
+        <div class="city-clock" data-tz="America/New_York"></div>
+        <span class="city-time-text" data-tz="America/New_York"></span>
+      </div>
+    </div>
+    <div class="city-row">
+      <span class="city-name">London</span>
+      <div class="city-time">
+        <div class="city-clock" data-tz="Europe/London"></div>
+        <span class="city-time-text" data-tz="Europe/London"></span>
+      </div>
+    </div>
+    <div class="city-row">
+      <span class="city-name">Dubai</span>
+      <div class="city-time">
+        <div class="city-clock" data-tz="Asia/Dubai"></div>
+        <span class="city-time-text" data-tz="Asia/Dubai"></span>
+      </div>
+    </div>
+    <div class="city-row">
+      <span class="city-name">Tokyo</span>
+      <div class="city-time">
+        <div class="city-clock" data-tz="Asia/Tokyo"></div>
+        <span class="city-time-text" data-tz="Asia/Tokyo"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11: DAMN. -->
+<section id="damn" class="damn">
+  <div class="damn-text">DAMN.</div>
+  <div class="damn-subtext">That was a lot. Want more?</div>
+</section>
+
+<!-- SECTION 12: FOOTER -->
+<footer id="footer" class="footer">
+  <div class="footer-layout">
+
+    <div>
+      <div class="footer-brand-name">BUBS SHAH</div>
+      <div class="footer-tagline">Design leader. Brand strategist. Available for the right challenge.</div>
+      <div class="footer-cta">Let's Talk &rarr;</div>
+    </div>
+
+    <div>
+      <div class="footer-section-title">Businesses & Products</div>
+      <ul class="footer-list">
+        <li>MAHA Virtue</li>
+        <li>Studio Bubs</li>
+        <li>Product Name 3</li>
+        <li>Product Name 4</li>
       </ul>
     </div>
+
     <div>
-      <h3 class="footer__col-title">Company</h3>
-      <ul class="footer__links">
-        <li><a href="#" class="footer__link" data-hover>Our Story</a></li>
-        <li><a href="#" class="footer__link" data-hover>Science Board</a></li>
-        <li><a href="#" class="footer__link" data-hover>Careers</a></li>
-        <li><a href="#" class="footer__link" data-hover>Press</a></li>
+      <div class="footer-section-title">Connect</div>
+      <ul class="footer-list">
+        <li>LinkedIn</li>
+        <li>Instagram</li>
+        <li>Dribbble</li>
+        <li>Email</li>
       </ul>
     </div>
-    <div>
-      <h3 class="footer__col-title">Legal</h3>
-      <ul class="footer__links">
-        <li><a href="#" class="footer__link" data-hover>Privacy Policy</a></li>
-        <li><a href="#" class="footer__link" data-hover>Terms of Service</a></li>
-        <li><a href="#" class="footer__link" data-hover>Refund Policy</a></li>
-        <li><a href="#" class="footer__link" data-hover>FDA Disclaimer</a></li>
-      </ul>
-    </div>
+
   </div>
 
-  <div class="footer__bottom">
-    <p class="footer__copyright">&copy; 2026 MAHA Virtue. All rights reserved.</p>
-    <div class="footer__social" aria-label="Social media">
-      <a href="#" class="footer__social-link" data-hover aria-label="Instagram">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1"/>
-          <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1"/>
-          <circle cx="11.5" cy="4.5" r="0.75" fill="currentColor"/>
-        </svg>
-      </a>
-      <a href="#" class="footer__social-link" data-hover aria-label="Twitter / X">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M2 2l5.5 6.5L2 14h1.5l4.5-4.5L12 14h2L8.5 7 14 2h-1.5L8 6 4 2H2z" stroke="currentColor" stroke-width="0.75" fill="none"/>
-        </svg>
-      </a>
-      <a href="#" class="footer__social-link" data-hover aria-label="YouTube">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <rect x="1" y="3" width="14" height="10" rx="3" stroke="currentColor" stroke-width="1"/>
-          <polygon points="6.5,5.5 11,8 6.5,10.5" fill="currentColor"/>
-        </svg>
-      </a>
-    </div>
+  <div class="footer-bottom">
+    <span>&copy; 2025 Bubs Shah. All rights reserved.</span>
+    <span>Crafted with intention.</span>
   </div>
-  <p class="footer__disclaimer">
-    These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease.
-  </p>
 </footer>
 
-<!-- ========== JAVASCRIPT ========== -->
 <script>
-(function() {
-  'use strict';
-
-  // --- Reduced motion check ---
-  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // --- Custom Cursor ---
-  var cursor = document.getElementById('cursor');
-  var dot = document.getElementById('cursorDot');
-  var mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-
-  if (!prefersReducedMotion && window.innerWidth > 640) {
-    document.addEventListener('mousemove', function(e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    (function updateCursor() {
-      cursorX += (mouseX - cursorX) * 0.15;
-      cursorY += (mouseY - cursorY) * 0.15;
-      cursor.style.transform = 'translate3d(' + cursorX + 'px, ' + cursorY + 'px, 0)';
-      requestAnimationFrame(updateCursor);
-    })();
-  }
-
-  // Hover detection for cursor
-  document.querySelectorAll('[data-hover]').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { dot.classList.add('hovering'); });
-    el.addEventListener('mouseleave', function() { dot.classList.remove('hovering'); });
-  });
-
-  // --- Magnetic Buttons ---
-  if (!prefersReducedMotion) {
-    document.querySelectorAll('[data-magnetic]').forEach(function(btn) {
-      btn.addEventListener('mousemove', function(e) {
-        var rect = btn.getBoundingClientRect();
-        var x = e.clientX - rect.left - rect.width / 2;
-        var y = e.clientY - rect.top - rect.height / 2;
-        btn.style.transform = 'translate(' + (x * 0.2) + 'px, ' + (y * 0.2) + 'px) scale(1.02)';
+  // Live clocks for the Cities section
+  function updateClocks() {
+    document.querySelectorAll('.city-time-text[data-tz]').forEach(function(el) {
+      var tz = el.dataset.tz;
+      var now = new Date();
+      var timeStr = now.toLocaleTimeString('en-US', {
+        timeZone: tz,
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
       });
-      btn.addEventListener('mouseleave', function() { btn.style.transform = ''; });
+      el.textContent = timeStr;
+    });
+
+    document.querySelectorAll('.city-clock[data-tz]').forEach(function(el) {
+      var tz = el.dataset.tz;
+      var now = new Date();
+      var parts = now.toLocaleTimeString('en-US', {
+        timeZone: tz,
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: false
+      }).split(':');
+      var h = parseInt(parts[0]);
+      var m = parseInt(parts[1]);
+      var hourDeg = ((h % 12) + m / 60) * 30;
+      var minDeg = m * 6;
+      el.innerHTML = '<svg viewBox="0 0 36 36" width="20" height="20" style="overflow:visible;">' +
+        '<line x1="18" y1="18" x2="' + (18 + 7 * Math.sin(hourDeg * Math.PI / 180)) + '" y2="' + (18 - 7 * Math.cos(hourDeg * Math.PI / 180)) + '" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>' +
+        '<line x1="18" y1="18" x2="' + (18 + 10 * Math.sin(minDeg * Math.PI / 180)) + '" y2="' + (18 - 10 * Math.cos(minDeg * Math.PI / 180)) + '" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round"/>' +
+        '<circle cx="18" cy="18" r="1.5" fill="rgba(255,255,255,0.5)"/>' +
+        '</svg>';
     });
   }
 
-  // --- Announcement Bar ---
-  document.getElementById('announceClose').addEventListener('click', function() {
-    var announce = document.getElementById('announce');
-    announce.style.transform = 'translateY(-100%)';
-    announce.style.transition = 'transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)';
-  });
-
-  // --- Rotating Hero Subheadlines ---
-  var rotatingLines = document.querySelectorAll('.hero__rotating-line');
-  var rotatingIdx = 0;
-  var ROTATE_INTERVAL = 4500;
-
-  if (rotatingLines.length > 1 && !prefersReducedMotion) {
-    setInterval(function() {
-      rotatingLines[rotatingIdx].classList.remove('active');
-      rotatingIdx = (rotatingIdx + 1) % rotatingLines.length;
-      rotatingLines[rotatingIdx].classList.add('active');
-    }, ROTATE_INTERVAL);
-  }
-
-  // --- 3D Carousel ---
-  var cards = document.querySelectorAll('.carousel__card');
-  var navItems = document.querySelectorAll('.carousel__nav-item');
-  var numberEl = document.querySelector('.deco__number');
-  var DURATION = 5000;
-  var STATES = ['active', 'next', 'back', 'hidden'];
-  var current = 0, timer = null;
-
-  function setSlide(index) {
-    current = index;
-    cards.forEach(function(card, i) {
-      var offset = (i - current + cards.length) % cards.length;
-      card.setAttribute('data-state', STATES[offset] || 'hidden');
-    });
-    navItems.forEach(function(item, i) {
-      item.classList.toggle('active', i === current);
-      item.setAttribute('aria-selected', i === current ? 'true' : 'false');
-      item.setAttribute('tabindex', i === current ? '0' : '-1');
-      var fill = item.querySelector('.carousel__nav-fill');
-      if (i === current) {
-        fill.style.animation = 'none';
-        fill.offsetHeight;
-        fill.style.animation = '';
-      } else {
-        fill.style.animation = 'none';
-        fill.style.width = '0';
-      }
-    });
-    if (numberEl) numberEl.innerHTML = '<span>0' + (current + 1) + '</span> / 0' + cards.length;
-  }
-
-  function nextSlide() { setSlide((current + 1) % cards.length); }
-
-  function startAutoplay() {
-    clearInterval(timer);
-    timer = setInterval(nextSlide, DURATION);
-  }
-
-  navItems.forEach(function(item) {
-    item.addEventListener('click', function() {
-      var idx = parseInt(item.dataset.slide, 10);
-      if (idx !== current) { setSlide(idx); startAutoplay(); }
-    });
-    item.addEventListener('keydown', function(e) {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        var next = (parseInt(item.dataset.slide, 10) + 1) % cards.length;
-        setSlide(next); startAutoplay();
-        navItems[next].focus();
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        var prev = (parseInt(item.dataset.slide, 10) - 1 + cards.length) % cards.length;
-        setSlide(prev); startAutoplay();
-        navItems[prev].focus();
-      }
-    });
-  });
-
-  cards.forEach(function(card) {
-    card.addEventListener('click', function() {
-      var idx = parseInt(card.dataset.index, 10);
-      if (idx !== current) { setSlide(idx); startAutoplay(); }
-    });
-  });
-
-  startAutoplay();
-
-  // --- Parallax on mouse move (hero only) ---
-  if (!prefersReducedMotion) {
-    var hero = document.getElementById('hero');
-    var parallaxEls = document.querySelectorAll('[data-parallax]');
-    var orbs = document.querySelectorAll('.orb');
-
-    hero.addEventListener('mousemove', function(e) {
-      var rect = hero.getBoundingClientRect();
-      var nx = (e.clientX - rect.left) / rect.width - 0.5;
-      var ny = (e.clientY - rect.top) / rect.height - 0.5;
-      parallaxEls.forEach(function(el) {
-        var speed = parseFloat(el.dataset.parallax);
-        el.style.transform = 'translate(' + (nx * speed * 120) + 'px, ' + (ny * speed * 120) + 'px)';
-      });
-      orbs.forEach(function(orb, i) {
-        var s = 0.02 + i * 0.01;
-        orb.style.transform = 'translate(' + (nx * s * 60) + 'px, ' + (ny * s * 60) + 'px)';
-      });
-    });
-  }
-
-  // --- Scroll Progress Bar ---
-  var scrollProgress = document.getElementById('scrollProgress');
-
-  function updateScrollProgress() {
-    var scrollTop = window.scrollY;
-    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    scrollProgress.style.width = pct + '%';
-  }
-
-  // --- Section Nav Visibility & Active State ---
-  var sectionNav = document.getElementById('sectionNav');
-  var navDots = sectionNav.querySelectorAll('.section-nav__dot');
-  var sections = ['hero', 'features', 'ingredients', 'products', 'testimonials', 'trust', 'cta'];
-
-  function updateSectionNav() {
-    var scrollY = window.scrollY;
-    var vh = window.innerHeight;
-
-    sectionNav.classList.toggle('visible', scrollY > vh * 0.5);
-
-    var activeIdx = 0;
-    sections.forEach(function(id, i) {
-      var el = document.getElementById(id);
-      if (el && el.offsetTop - vh * 0.4 <= scrollY) activeIdx = i;
-    });
-
-    navDots.forEach(function(d, i) { d.classList.toggle('active', i === activeIdx); });
-  }
-
-  navDots.forEach(function(navDot) {
-    navDot.addEventListener('click', function() {
-      var target = document.getElementById(navDot.dataset.section);
-      if (target) target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    });
-  });
-
-  // --- Sticky CTA Bar ---
-  var stickyCta = document.getElementById('stickyCta');
-  var ctaSection = document.getElementById('cta');
-
-  function updateStickyCta() {
-    var scrollY = window.scrollY;
-    var vh = window.innerHeight;
-    var ctaTop = ctaSection.offsetTop;
-    var show = scrollY > vh && scrollY < ctaTop - vh * 0.5;
-    stickyCta.classList.toggle('visible', show);
-  }
-
-  // --- Scroll Reveal ---
-  function revealOnScroll() {
-    var reveals = document.querySelectorAll('.reveal:not(.visible)');
-    var trigger = window.innerHeight * 0.88;
-
-    reveals.forEach(function(el) {
-      var top = el.getBoundingClientRect().top;
-      if (top < trigger) el.classList.add('visible');
-    });
-  }
-
-  // Combined scroll handler
-  var ticking = false;
-  function onScroll() {
-    if (!ticking) {
-      requestAnimationFrame(function() {
-        updateScrollProgress();
-        updateSectionNav();
-        updateStickyCta();
-        revealOnScroll();
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  // --- Waitlist Form with Validation ---
-  var waitlistForm = document.getElementById('waitlistForm');
-  var waitlistEmail = document.getElementById('waitlistEmail');
-  var waitlistError = document.getElementById('waitlistError');
-  var waitlistBtn = document.getElementById('waitlistBtn');
-  var waitlistSuccess = document.getElementById('waitlistSuccess');
-
-  function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
-  function showFormError(msg) {
-    waitlistError.textContent = msg;
-    waitlistError.classList.add('visible');
-    waitlistEmail.setAttribute('aria-invalid', 'true');
-  }
-
-  function clearFormError() {
-    waitlistError.textContent = '';
-    waitlistError.classList.remove('visible');
-    waitlistEmail.removeAttribute('aria-invalid');
-  }
-
-  waitlistEmail.addEventListener('input', clearFormError);
-
-  waitlistForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    var email = waitlistEmail.value.trim();
-
-    if (!email) {
-      showFormError('Please enter your email address.');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      showFormError('Please enter a valid email address.');
-      return;
-    }
-
-    clearFormError();
-    waitlistBtn.disabled = true;
-    waitlistBtn.textContent = 'Joining...';
-
-    // Simulate submission (backend TBD)
-    setTimeout(function() {
-      waitlistForm.style.display = 'none';
-      waitlistSuccess.classList.add('visible');
-      // Also hide the sticky CTA after signup
-      stickyCta.classList.remove('visible');
-      stickyCta.style.display = 'none';
-    }, 800);
-  });
-
-})();
+  updateClocks();
+  setInterval(updateClocks, 30000);
 </script>
 
 </body>
