@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bubs Shah — ANNOTATED COPY REVIEW (CEO Notes)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Jost:wght@100;200;300;400;500;600;700;800;900&family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     ANNOTATION SYSTEM — Neon Green Change Markers
+     ============================================= */
+  .ann-changed {
+    position: relative;
+    outline: 2px solid #39ff14;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .ann-deleted {
+    position: relative;
+    text-decoration: line-through;
+    text-decoration-color: #ff3333;
+    opacity: 0.4;
+  }
+  .ann-new {
+    color: #39ff14 !important;
+    text-shadow: 0 0 8px rgba(57,255,20,0.4);
+  }
+  .ann-bubble {
+    position: relative;
+    display: inline-block;
+  }
+  .ann-bubble::after {
+    content: attr(data-note);
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    transform: translateY(-100%);
+    background: #39ff14;
+    color: #000;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    max-width: 360px;
+    white-space: normal;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(57,255,20,0.3);
+    pointer-events: none;
+    line-height: 1.3;
+  }
+  .ann-bubble-inline {
+    display: block;
+    background: rgba(57,255,20,0.12);
+    border-left: 3px solid #39ff14;
+    color: #39ff14;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    line-height: 1.5;
+    position: relative;
+    z-index: 100;
+  }
+  .ann-bubble-inline strong {
+    color: #fff;
+    font-weight: 700;
+  }
+  .ann-bubble-inline .ann-label {
+    background: #39ff14;
+    color: #000;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 8px;
+    display: inline-block;
+  }
+  .ann-section-header {
+    background: #39ff14;
+    color: #000;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    padding: 10px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 100;
+  }
+  .ann-legend {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    border: 2px solid #39ff14;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-family: 'Jost', sans-serif;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.8;
+    max-width: 280px;
+  }
+  .ann-legend h3 {
+    color: #39ff14;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(57,255,20,0.3);
+    padding-bottom: 6px;
+  }
+  .ann-legend-item { display: flex; align-items: center; gap: 8px; }
+  .ann-legend-swatch {
+    width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0;
+  }
+  .ann-strike { text-decoration: line-through; color: #ff3333; }
+
+  /* =============================================
+     DESIGN TOKENS — Matched to Figma
+     ============================================= */
+  :root {
+    --bg-dark: #0b0000;
+    --white: #faf9f6;
+    --text: #d2c9bf;
+    --primary: #f8003e;
+    --separator: #212121;
+    --font-display: 'Bebas Neue', 'Oswald', sans-serif;
+    --font-body: 'Jost', sans-serif;
+    --font-label: 'Oswald', sans-serif;
+    --section-pad: clamp(3rem, 8vw, 6rem);
+    --side-pad: clamp(1.5rem, 5vw, 6rem);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    background: var(--bg-dark);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; font-family: inherit; }
+
+  /* =============================================
+     NAV DOTS (Right Side)
+     ============================================= */
+  .nav-dots {
+    position: fixed;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .nav-dots a {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(210, 201, 191, 0.3);
+    transition: all 0.3s var(--ease);
+  }
+  .nav-dots a:hover {
+    background: var(--primary);
+    transform: scale(1.6);
+  }
+  @media (max-width: 768px) {
+    .nav-dots { display: none; }
+  }
+
+  /* =============================================
+     SECTION 1: HERO
+     ============================================= */
+  .hero {
+    min-height: 100vh;
+    padding: 40px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--bg-dark);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hero-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+  }
+  .hero-bg-gradient-1 {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(238,97,11,0) 33%, rgba(255,0,212,0.8) 100%);
+  }
+  .hero-bg-gradient-2 {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255,80,1,0) 25%, #ff0105 100%);
+    mix-blend-mode: overlay;
+  }
+
+  .hero-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 0;
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-label);
+    font-weight: 600;
+    text-transform: lowercase;
+    letter-spacing: 0.02em;
+  }
+  .hero-nav-left {
+    font-size: 16px;
+    color: var(--white);
+  }
+  .hero-nav-center {
+    font-size: 16px;
+    color: var(--white);
+  }
+  .hero-nav-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    font-size: 24px;
+  }
+  .hero-nav-right a {
+    color: var(--white);
+    transition: opacity 0.3s;
+  }
+  .hero-nav-right a:hover { opacity: 0.6; }
+
+  .hero-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .hero-byline {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    text-transform: uppercase;
+    color: var(--bg-dark);
+  }
+  .hero-byline-small {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+  }
+  .hero-byline-large {
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 32px;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 26vw, 500px);
+    font-weight: 900;
+    line-height: 0.7;
+    letter-spacing: -0.02em;
+    color: var(--bg-dark);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    color: var(--bg-dark);
+    text-transform: uppercase;
+  }
+  .hero-ctas-row {
+    display: flex;
+    gap: 40px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-cta-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+  .hero-cta-item:hover { opacity: 0.7; }
+  .hero-cta-small {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+  }
+  .hero-cta-large {
+    font-family: var(--font-label);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 60px);
+  }
+
+  .hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: var(--bg-dark);
+  }
+
+  /* Floating card on hero */
+  .hero-float-card {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 280px;
+    height: 420px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 3;
+    color: var(--bg-dark);
+    font-family: var(--font-label);
+    font-weight: 600;
+  }
+  .hero-float-card-top { font-size: 14px; }
+  .hero-float-card-center {
+    font-size: 32px;
+    line-height: 1;
+  }
+  .hero-float-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+
+  @media (max-width: 900px) {
+    .hero-nav-right { font-size: 16px; flex-direction: row; gap: 16px; }
+    .hero-float-card { display: none; }
+    .hero-bottom { font-size: 12px; }
+    .hero-ctas-row { gap: 20px; }
+  }
+
+  /* =============================================
+     SECTION 2: STATS / MANIFESTO (combined)
+     ============================================= */
+  .stats-manifesto {
+    padding: 80px;
+    background: var(--bg-dark);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 100px;
+  }
+
+  .stats-label {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--text);
+    text-align: center;
+  }
+
+  .stats-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 12vw, 240px);
+    font-weight: 400;
+    line-height: 0.72;
+    color: var(--text);
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .stats-headline .plus {
+    font-size: 0.645em;
+  }
+
+  .manifesto-rows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .manifesto-row {
+    display: flex;
+    gap: 40px;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .manifesto-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .manifesto-small {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .manifesto-large {
+    font-family: var(--font-label);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 60px);
+    color: var(--text);
+  }
+
+  @media (max-width: 768px) {
+    .stats-manifesto { padding: 40px 20px; gap: 60px; }
+    .manifesto-row { flex-direction: column; align-items: center; gap: 12px; }
+  }
+
+  /* =============================================
+     SECTION 3/4: CLIENT BRAND WALL (large names)
+     ============================================= */
+  .brand-wall {
+    padding: 200px 0 400px;
+    background: var(--bg-dark);
+    position: relative;
+  }
+
+  .brand-wall-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .brand-wall-name {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 15vw, 290px);
+    font-weight: 400;
+    line-height: 0.8;
+    text-transform: uppercase;
+    color: var(--white);
+    text-align: center;
+    padding: 3px 0;
+    width: 100%;
+    transition: opacity 0.3s;
+    cursor: default;
+  }
+  .brand-wall-name:hover { opacity: 0.7; }
+
+  .brand-wall-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(210,201,191,0.3);
+  }
+
+  .brand-wall-highlight {
+    background: linear-gradient(90deg, rgba(255,1,73,0.7) 0%, rgba(254,86,3,0.7) 25%),
+                linear-gradient(90deg, rgb(254,18,25) 21.55%, rgb(253,79,0) 72.54%);
+    color: var(--bg-dark);
+    padding: 3px 100px;
+    backdrop-filter: blur(10px);
+    width: 100%;
+    text-align: center;
+  }
+  .brand-wall-highlight .brand-wall-name {
+    color: var(--bg-dark);
+  }
+
+  /* Floating cards */
+  .brand-wall-float {
+    position: absolute;
+    width: 723px;
+    max-width: 90vw;
+    height: 458px;
+    border-radius: 40px;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: var(--font-label);
+    font-weight: 600;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 65px 73px rgba(0,0,0,0.83);
+    z-index: 10;
+    color: var(--bg-dark);
+  }
+  .brand-wall-float-1 {
+    right: 100px;
+    top: 400px;
+  }
+  .brand-wall-float-2 {
+    left: 100px;
+    bottom: 200px;
+  }
+  .brand-wall-float-top { font-size: 24px; }
+  .brand-wall-float-center {
+    font-size: 40px;
+    line-height: 1;
+  }
+  .brand-wall-float-bottom {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+
+  @media (max-width: 1200px) {
+    .brand-wall-float { display: none; }
+    .brand-wall-highlight { padding: 3px 20px; }
+  }
+
+  /* =============================================
+     SECTION 5: SKILLS (KEEP AS-IS — already matches Figma)
+     ============================================= */
+  .skills {
+    padding: 0;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .skills-marquee {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  }
+  .skills-marquee-track {
+    display: inline-flex;
+    gap: 3rem;
+    animation: marquee-scroll 20s linear infinite;
+  }
+  .skills-marquee-track span {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    color: rgba(255,255,255,0.4);
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .skills-hero {
+    padding: clamp(2rem, 6vw, 5rem) var(--side-pad);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .skills-title {
+    font-size: clamp(5rem, 14vw, 12rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    line-height: 0.85;
+    display: flex;
+    align-items: flex-end;
+    font-family: var(--font-display);
+  }
+  .skills-title-photo {
+    width: clamp(3.5rem, 10vw, 9rem);
+    height: clamp(4.5rem, 13vw, 11.5rem);
+    background: #333;
+    display: inline-block;
+    flex-shrink: 0;
+    margin: 0 -0.05em;
+    position: relative;
+    top: -0.05em;
+    overflow: hidden;
+  }
+  .skills-title-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .skills-list {
+    padding: 0 var(--side-pad);
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+  }
+  .skill-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: clamp(0.8rem, 2vw, 1.4rem) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    gap: 2rem;
+  }
+  .skill-row:first-child {
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .skill-row-name {
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    flex-shrink: 0;
+    font-style: italic;
+    font-family: var(--font-display);
+  }
+  .skill-row-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-end;
+    max-width: 400px;
+    text-align: right;
+  }
+  .skill-row-desc {
+    font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+    color: rgba(255,255,255,0.45);
+    line-height: 1.4;
+    font-family: var(--font-label);
+    font-weight: 600;
+  }
+  .skill-row-tags {
+    font-size: clamp(0.6rem, 1vw, 0.75rem);
+    color: rgba(255,255,255,0.25);
+    line-height: 1.4;
+    font-family: var(--font-label);
+    font-weight: 200;
+  }
+  .skill-row--highlight {
+    background: linear-gradient(90deg, rgba(255,1,73,0.7) 0%, rgba(254,86,3,0.7) 25%),
+                linear-gradient(90deg, rgb(254,18,25) 21.55%, rgb(253,79,0) 72.54%);
+    margin: 0 calc(var(--side-pad) * -1);
+    padding-left: var(--side-pad);
+    padding-right: var(--side-pad);
+    border-bottom: none;
+    backdrop-filter: blur(10px);
+  }
+  .skill-row--highlight + .skill-row { border-top: none; }
+  .skill-row--highlight .skill-row-name { color: var(--bg-dark); }
+  .skill-row--highlight .skill-row-desc { color: var(--text); }
+  .skill-row--highlight .skill-row-tags { color: var(--text); opacity: 0.7; }
+
+  /* =============================================
+     SECTION 6: STATS SHOWCASE (red glassmorphic)
+     ============================================= */
+  .stats-showcase {
+    padding: 80px;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stats-showcase-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .stats-showcase-bg img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .stats-showcase-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--bg-dark) 0%, transparent 25%),
+                linear-gradient(180deg, transparent 85%, #000 100%);
+  }
+
+  .stats-showcase-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(248,0,62,0.5);
+    backdrop-filter: blur(15px);
+    border-radius: 40px;
+    padding: 80px;
+    width: 100%;
+    max-width: 1600px;
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    align-items: center;
+    color: var(--separator);
+  }
+
+  .stats-showcase-label {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 24px;
+    width: 100%;
+  }
+  .stats-showcase-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--separator);
+  }
+
+  .stats-showcase-hero-stat {
+    text-align: left;
+    width: 100%;
+  }
+  .stats-showcase-hero-number {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 16vw, 320px);
+    line-height: 1;
+    color: var(--separator);
+  }
+  .stats-showcase-hero-number .plus { font-size: 0.645em; }
+  .stats-showcase-hero-label {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 32px;
+    color: var(--separator);
+  }
+
+  .stats-showcase-row {
+    display: flex;
+    gap: 90px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .stats-showcase-item { flex: 1; min-width: 300px; }
+  .stats-showcase-item-number {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 12vw, 240px);
+    line-height: 1;
+    color: var(--separator);
+  }
+  .stats-showcase-item-label {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 32px;
+    color: var(--separator);
+  }
+
+  .stats-showcase-ctas {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    text-align: center;
+  }
+  .stats-showcase-ctas-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stats-showcase-cta {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    cursor: pointer;
+    color: var(--separator);
+  }
+  .stats-showcase-cta-sm {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    text-transform: uppercase;
+  }
+  .stats-showcase-cta-lg {
+    font-family: var(--font-label);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 60px);
+  }
+
+  @media (max-width: 768px) {
+    .stats-showcase { padding: 20px; }
+    .stats-showcase-container { padding: 40px 20px; gap: 60px; }
+    .stats-showcase-row { flex-direction: column; gap: 40px; }
+  }
+
+  /* =============================================
+     SECTION 7: EXPERIENCE LIST (brand names + roles)
+     ============================================= */
+  .experience {
+    padding: 120px 0 200px;
+    background: var(--bg-dark);
+  }
+  .experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+  .experience-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1440px;
+    padding: 3px var(--side-pad);
+    color: var(--text);
+  }
+  .experience-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 15vw, 290px);
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.8;
+  }
+  .experience-role {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 24px;
+    letter-spacing: -1.2px;
+    white-space: nowrap;
+  }
+  .experience-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(210,201,191,0.3);
+  }
+  .experience-highlight {
+    background: var(--primary);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .experience-highlight .experience-item {
+    color: var(--separator);
+  }
+  .experience-highlight .experience-name {
+    color: var(--separator);
+  }
+  .experience-highlight .experience-role {
+    color: #040404;
+  }
+
+  @media (max-width: 768px) {
+    .experience-role { font-size: 14px; }
+  }
+
+  /* =============================================
+     SECTION 8: FULL BRAND LIST (4-column grid)
+     ============================================= */
+  .brand-list {
+    padding: 200px 120px 120px;
+    background: var(--white);
+    border-radius: 80px 80px 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .brand-list-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 900;
+    font-size: clamp(20rem, 55vw, 1041px);
+    color: var(--text);
+    opacity: 0.15;
+    text-transform: uppercase;
+    pointer-events: none;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  .brand-list-label {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand-list-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px 75px;
+    max-width: 1800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .brand-list-item {
+    font-family: var(--font-label);
+    font-weight: 800;
+    font-size: clamp(1.5rem, 4vw, 75px);
+    color: var(--bg-dark);
+    line-height: 1;
+    cursor: default;
+    transition: color 0.2s;
+  }
+  .brand-list-item:hover { color: var(--primary); }
+  .brand-list-item--placeholder {
+    color: #ffae00;
+  }
+
+  .brand-list-tagline {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: clamp(1rem, 2vw, 32px);
+    color: var(--bg-dark);
+    max-width: 100%;
+    margin-top: 80px;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand-list-nav {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: var(--bg-dark);
+    margin-top: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 900px) {
+    .brand-list { padding: 100px 20px 60px; border-radius: 40px 40px 0 0; }
+    .brand-list-grid { grid-template-columns: repeat(2, 1fr); gap: 15px 30px; }
+  }
+
+  /* =============================================
+     SECTION 9: INDUSTRIES (word cloud)
+     ============================================= */
+  .industries {
+    padding: 200px 100px 80px;
+    background: var(--white);
+    position: relative;
+    overflow: clip;
+  }
+
+  .industries-words {
+    text-align: center;
+    color: var(--bg-dark);
+    font-size: clamp(2rem, 11vw, 220px);
+    line-height: 0.72;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+  .industries-words-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  .ind-thin {
+    font-family: var(--font-label);
+    font-weight: 200;
+  }
+  .ind-medium {
+    font-family: var(--font-label);
+    font-weight: 500;
+  }
+  .ind-black {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+  .ind-light {
+    font-family: var(--font-label);
+    font-weight: 200;
+  }
+  .ind-regular {
+    font-family: var(--font-label);
+    font-weight: 400;
+  }
+
+  @media (max-width: 768px) {
+    .industries { padding: 80px 20px 40px; }
+    .industries-words-row { flex-wrap: wrap; }
+  }
+
+  /* =============================================
+     SECTION 10: AWARDS + HONORS
+     ============================================= */
+  .awards {
+    padding: 200px 120px 120px;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .awards-nav {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: var(--bg-dark);
+    margin-bottom: 60px;
+  }
+
+  .awards-content {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .awards-tagline {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: clamp(2rem, 4vw, 82px);
+    text-transform: uppercase;
+    color: var(--bg-dark);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .awards-description {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: clamp(1rem, 2vw, 32px);
+    color: var(--bg-dark);
+    text-align: center;
+    max-width: 1020px;
+    line-height: 1.2;
+  }
+
+  .awards-title {
+    font-family: var(--font-label);
+    font-weight: 200;
+    font-size: clamp(3rem, 25vw, 590px);
+    color: var(--bg-dark);
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+
+  .awards-logos {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .award-logo-box {
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 19px;
+    min-width: 56px;
+  }
+  .award-logo-box img {
+    max-width: 84px;
+    max-height: 68px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+  /* Varying heights for the bar chart effect */
+  .alb-1 { height: 158px; width: 120px; }
+  .alb-2 { height: 119px; width: 81px; }
+  .alb-3 { height: 97px; width: 63px; }
+  .alb-4 { height: 155px; width: 100px; }
+  .alb-5 { height: 131px; width: 91px; }
+  .alb-6 { height: 88px; width: 63px; }
+  .alb-7 { height: 116px; width: 81px; }
+  .alb-8 { height: 131px; width: 88px; }
+  .alb-9 { height: 110px; width: 106px; }
+  .alb-10 { height: 158px; width: 113px; }
+  .alb-11 { height: 139px; width: 102px; }
+  .alb-12 { height: 131px; width: 97px; }
+  .alb-13 { height: 97px; width: 66px; }
+  .alb-14 { height: 116px; width: 83px; }
+  .alb-15 { height: 78px; width: 56px; }
+
+  @media (max-width: 768px) {
+    .awards { padding: 80px 20px; }
+    .awards-logos { gap: 6px; }
+    .award-logo-box { transform: scale(0.6); }
+  }
+
+  /* =============================================
+     SECTION 11: EDITORIAL ABOUT (with BG image)
+     ============================================= */
+  .editorial {
+    padding: 800px 100px 100px;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 160px;
+  }
+  .editorial-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .editorial-bg img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .editorial-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.2);
+  }
+
+  .editorial-content {
+    position: relative;
+    z-index: 1;
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .editorial-label {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  .editorial-headline {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: clamp(2rem, 4vw, 80px);
+    line-height: 0.9;
+  }
+  .editorial-sub {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: clamp(1rem, 2vw, 36px);
+    line-height: 0.9;
+  }
+
+  .editorial-nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-label);
+    font-size: 24px;
+    color: var(--white);
+  }
+  .editorial-nav-bold { font-weight: 600; }
+  .editorial-nav-light { font-weight: 200; }
+
+  @media (max-width: 768px) {
+    .editorial { padding: 400px 20px 60px; }
+  }
+
+  /* =============================================
+     SECTION 12: CITIES
+     ============================================= */
+  .cities {
+    padding: 80px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-dark);
+    border-radius: 20px;
+  }
+
+  .cities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    text-align: center;
+  }
+  .city-name {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 16vw, 320px);
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1;
+    cursor: default;
+  }
+
+  @media (max-width: 768px) {
+    .cities { padding: 40px 20px; }
+  }
+
+  /* =============================================
+     SECTION 13: DAMN.
+     ============================================= */
+  .damn {
+    padding: 40px 100px 20px;
+    min-height: 100vh;
+    background: var(--bg-dark);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+  }
+
+  .damn-top-nav, .damn-bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-label);
+    font-size: 24px;
+    color: var(--white);
+  }
+  .damn-nav-bold { font-weight: 600; }
+  .damn-nav-light { font-weight: 200; }
+
+  .damn-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+  }
+  .damn-pre {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .damn-pre-title {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 24px;
+  }
+  .damn-pre-body {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 16px;
+    max-width: 678px;
+    line-height: 1.4;
+    color: var(--white);
+  }
+  .damn-text {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 40vw, 800px);
+    font-weight: 900;
+    line-height: 0.45;
+    color: var(--white);
+  }
+  .damn-post {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 16px;
+    max-width: 718px;
+    line-height: 1.4;
+    color: var(--white);
+  }
+
+  @media (max-width: 768px) {
+    .damn { padding: 20px; }
+    .damn-top-nav, .damn-bottom-nav { font-size: 14px; }
+  }
+
+  /* =============================================
+     SECTION 14: FOOTER (large BUBS with bg image)
+     ============================================= */
+  .footer {
+    padding: 320px 100px 20px;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .footer-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .footer-bg img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .footer-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 38px;
+    align-items: flex-end;
+  }
+
+  .footer-bubs {
+    font-family: var(--font-display);
+    font-size: clamp(10rem, 55vw, 1096px);
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 0.44;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+  }
+
+  .footer-ctas {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
+    color: var(--white);
+  }
+  .footer-ctas-row {
+    display: flex;
+    gap: 55px;
+    align-items: flex-end;
+  }
+  .footer-cta-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+  }
+  .footer-cta-sm {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+  .footer-cta-lg {
+    font-family: var(--font-label);
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 82px);
+  }
+
+  .footer-nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-label);
+    font-size: 24px;
+    color: var(--white);
+    padding-bottom: 20px;
+  }
+  .footer-nav-bold { font-weight: 600; }
+  .footer-nav-light { font-weight: 200; }
+
+  @media (max-width: 768px) {
+    .footer { padding: 100px 20px 20px; }
+    .footer-bubs { font-size: 20vw; }
+    .footer-ctas { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ANNOTATION LEGEND -->
+<div class="ann-legend">
+  <h3>Copy Review Legend</h3>
+  <div class="ann-legend-item"><span class="ann-legend-swatch" style="background:#39ff14;"></span> New / revised copy</div>
+  <div class="ann-legend-item"><span class="ann-legend-swatch" style="background:#ff3333;"></span> <span class="ann-strike">Removed / replaced</span></div>
+  <div class="ann-legend-item"><span class="ann-legend-swatch" style="border:2px solid #39ff14;"></span> Green bubble = note</div>
+  <div class="ann-legend-item"><span class="ann-legend-swatch" style="background:rgba(57,255,20,0.15);border-left:3px solid #39ff14;"></span> Inline comment</div>
+  <div style="margin-top:8px;color:rgba(255,255,255,0.5);font-size:10px;">
+    Review by CEO Agent &mdash; Apr 5, 2026<br>
+    Focus: Personal brand value, story coherence, credibility
+  </div>
+</div>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" aria-label="Section navigation">
+  <a href="#hero" title="Hero"></a>
+  <a href="#stats" title="Stats"></a>
+  <a href="#brand-wall" title="Brand Wall"></a>
+  <a href="#skills" title="Skills"></a>
+  <a href="#stats-showcase" title="Stats Showcase"></a>
+  <a href="#experience" title="Experience"></a>
+  <a href="#brand-list" title="Brand List"></a>
+  <a href="#industries" title="Industries"></a>
+  <a href="#awards" title="Awards"></a>
+  <a href="#editorial" title="Editorial"></a>
+  <a href="#cities" title="Cities"></a>
+  <a href="#damn" title="DAMN."></a>
+  <a href="#footer" title="Footer"></a>
+</nav>
+
+<!-- =============================================
+     SECTION 1: HERO
+     ============================================= -->
+<div class="ann-section-header">SECTION 1: HERO &mdash; Copy Review</div>
+<section id="hero" class="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-gradient-1"></div>
+    <div class="hero-bg-gradient-2"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 60%, rgba(255,120,0,0.4) 0%, transparent 60%);"></div>
+  </div>
+
+  <nav class="hero-nav">
+    <div class="hero-nav-left"><span class="ann-deleted">crafted by</span> <span class="ann-new">bubs shah</span></div>
+    <div class="hero-nav-center"><span class="ann-deleted">me</span> <span class="ann-new">design executive</span></div>
+    <div class="hero-nav-right">
+      <a href="#brand-wall">work</a>
+      <a href="#skills">skills</a>
+      <a href="#editorial"><span class="ann-deleted">me</span> <span class="ann-new">about</span></a>
+      <a href="#footer">contact</a>
+    </div>
+  </nav>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">NOTE</span>
+    Nav labels: "crafted by" is vague branding — replace with his name for immediate recognition. "me" as nav label is unclear; "about" is standard and scannable.
+  </div>
+
+  <div class="hero-center">
+    <div class="hero-byline">
+      <span class="hero-byline-small"><span class="ann-deleted">crafted by</span> <span class="ann-new">30 years &middot; 9 industries &middot;</span></span>
+      <span class="hero-byline-large">BUBS SHAH</span>
+    </div>
+
+    <div class="ann-bubble-inline">
+      <span class="ann-label">CHANGE</span>
+      <strong>Byline above name:</strong> "crafted by" says nothing about value. Replace with the hard-hitting stat line "30 years &middot; 9 industries" so visitors immediately understand the scale. Name stays as the anchor.
+    </div>
+
+    <h1 class="hero-title"><span class="ann-deleted">REMEMBER<br>THE NAME</span><br><span class="ann-new" style="font-family:var(--font-display);font-size:clamp(4rem,26vw,500px);">DESIGN<br>IS THE<br>WEAPON</span></h1>
+
+    <div class="ann-bubble-inline">
+      <span class="ann-label">MAJOR</span>
+      <strong>Hero headline:</strong> "REMEMBER THE NAME" is confrontational and self-referential &mdash; it tells the visitor what to think instead of showing value. Replace with <strong>"DESIGN IS THE WEAPON"</strong> (or "DESIGN MOVES MONEY") &mdash; it positions design as Bubs's strategic superpower, aligns with the brand pillar "Design = Revenue", and gives the visitor a reason to keep scrolling. Alternative options: "REVENUE BY DESIGN" / "DESIGN THAT PRINTS MONEY" / "I TURN DESIGN INTO BILLIONS"
+    </div>
+
+    <div class="hero-ctas">
+      <div class="hero-ctas-row">
+        <div class="hero-cta-item">
+          <span class="hero-cta-small">explore</span>
+          <span class="hero-cta-large">the work</span>
+        </div>
+        <div class="hero-cta-item">
+          <span class="hero-cta-small"><span class="ann-deleted">remember</span> <span class="ann-new">meet</span></span>
+          <span class="hero-cta-large"><span class="ann-deleted">the legend</span> <span class="ann-new">the mind</span></span>
+        </div>
+      </div>
+      <div class="hero-cta-item">
+        <span class="hero-cta-small"><span class="ann-deleted">portfolio</span> <span class="ann-new">$10B+ revenue impact</span></span>
+        <span class="hero-cta-large"><span class="ann-deleted">speaks for itself</span> <span class="ann-new">the proof</span></span>
+      </div>
+    </div>
+
+    <div class="ann-bubble-inline">
+      <span class="ann-label">CHANGE</span>
+      <strong>CTAs:</strong> "remember the legend" is self-aggrandizing without substance. "Meet the mind" invites curiosity. "portfolio speaks for itself" is grammatically off and passive &mdash; replace with "$10B+ revenue impact &middot; the proof" which gives a concrete reason to click. Every CTA should promise value, not demand respect.
+    </div>
+  </div>
+
+  <div class="hero-bottom">
+    <span><span class="ann-deleted">crafted by</span> <span class="ann-new">Est. 1996</span></span>
+    <span><span class="ann-deleted">crafted by</span> <span class="ann-new">&copy; 2026 Bubs Shah</span></span>
+    <span><span class="ann-deleted">crafted by</span> <span class="ann-new">Available for VP / Head of Design</span></span>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">FIX</span>
+    <strong>Footer bar:</strong> "crafted by" repeated 3x is placeholder text that shipped. Replace with real info: establishment year, copyright, and availability signal. This bottom bar is prime real estate for a hiring CTA.
+  </div>
+
+  <div class="hero-float-card">
+    <div class="hero-float-card-top"><span class="ann-deleted">honors</span> <span class="ann-new">impact</span></div>
+    <div class="hero-float-card-center">
+      <span class="ann-deleted">Making<br>Breaking<br>Defining<br>Industries</span>
+      <span class="ann-new">Marriott<br>1.5 &rarr; 4.9<br>App Store<br>Rating</span>
+    </div>
+    <div class="hero-float-card-bottom">
+      <span><span class="ann-deleted">honors</span> <span class="ann-new">case study</span></span>
+      <span><span class="ann-deleted">honors</span> <span class="ann-new">view &rarr;</span></span>
+      <span><span class="ann-deleted">honors</span> <span class="ann-new">2024</span></span>
+    </div>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">MAJOR</span>
+    <strong>Float card:</strong> "Making / Breaking / Defining / Industries" is vague manifesto-speak. This card is a perfect mini case-study teaser. Replace with a real result &mdash; the Marriott app rating transformation (1.5 &rarr; 4.9) is Bubs's most compelling proof point. "honors" repeated 3x is placeholder &mdash; replace with functional labels.
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 2-3: STATS + MANIFESTO (combined)
+     ============================================= -->
+<div class="ann-section-header">SECTION 2: STATS + MANIFESTO &mdash; Copy Review</div>
+<section id="stats" class="stats-manifesto">
+  <div class="stats-label"><span class="ann-deleted">me</span> <span class="ann-new">by the numbers</span></div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">FIX</span>
+    <strong>Label "me":</strong> Single-word placeholder. Replace with "by the numbers" to set up the stats that follow.
+  </div>
+
+  <div class="stats-headline">
+    30<span class="plus">+</span> Years as a Design Leader. 150+ <span class="ann-deleted">Honors</span><span class="ann-new">Awards</span>. <span class="ann-deleted">105 Billion</span> <span class="ann-new">$10B+</span> in revenue impact. <span class="ann-deleted">29</span> <span class="ann-new">9</span> industries transformed
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">CRITICAL</span>
+    <strong>"105 Billion" &rarr; "$10B+":</strong> This is the single most damaging credibility issue on the site. $105 billion would rank Bubs above most Fortune 100 companies' entire revenue. The real number is $10B+ across all clients &mdash; still extraordinary. Inflated claims destroy trust with exactly the senior leaders this site targets.<br><br>
+    <strong>"29 industries" &rarr; "9 industries":</strong> Same problem. The other version of the site says 9. Even that is impressive. Listing 29 industries later (including "Architecture", "CPG", "Banking") suggests breadth without proof. 9 industries with named clients is far more credible.<br><br>
+    <strong>"Honors" &rarr; "Awards":</strong> "Honors" is vague. "Awards" is concrete and universally understood. The awards section lists Cannes, Webby, D&AD &mdash; call them what they are.
+  </div>
+
+  <div class="manifesto-rows">
+    <div class="manifesto-row">
+      <div class="manifesto-item">
+        <span class="manifesto-small">i don't</span>
+        <span class="manifesto-large">follow playbooks</span>
+      </div>
+      <div class="manifesto-item">
+        <span class="manifesto-small"><span class="ann-deleted">or</span> <span class="ann-new">i don't</span></span>
+        <span class="manifesto-large">chase trends</span>
+      </div>
+      <div class="manifesto-item">
+        <span class="manifesto-small"><span class="ann-deleted">and</span> <span class="ann-new">i don't</span></span>
+        <span class="manifesto-large"><span class="ann-deleted">I don't play it safe</span><span class="ann-new">play it safe</span></span>
+      </div>
+    </div>
+
+    <div class="ann-bubble-inline">
+      <span class="ann-label">NOTE</span>
+      <strong>Manifesto row 1:</strong> The statements are strong. Small fix: inconsistent capitalization ("I don't" vs "i don't") and the conjunctions "or" / "and" break the rhythmic repetition. Use "i don't" consistently for all three &mdash; the anaphora (repetition) is more powerful.
+    </div>
+
+    <div class="manifesto-row">
+      <div class="manifesto-item">
+        <span class="manifesto-small">i build</span>
+        <span class="manifesto-large">fortune 500 brands</span>
+      </div>
+      <div class="manifesto-item">
+        <span class="manifesto-small">i transform</span>
+        <span class="manifesto-large"><span class="ann-deleted">industries</span><span class="ann-new">entire industries</span></span>
+      </div>
+      <div class="manifesto-item">
+        <span class="manifesto-small">i scale</span>
+        <span class="manifesto-large">design organizations</span>
+      </div>
+    </div>
+
+    <div class="ann-bubble-inline">
+      <span class="ann-label">NOTE</span>
+      <strong>Manifesto row 2:</strong> These are the strongest lines on the page. "i build fortune 500 brands / i transform industries / i scale design organizations" maps perfectly to the three brand pillars. Consider adding "entire" before "industries" for emphasis. Keep these.
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 4: CLIENT BRAND WALL (large names)
+     ============================================= -->
+<div class="ann-section-header">SECTION 3-4: BRAND WALL &mdash; Copy Review</div>
+<section id="brand-wall" class="brand-wall">
+  <div class="brand-wall-list">
+    <div class="brand-wall-name">Macy's</div>
+    <div class="brand-wall-divider"></div>
+    <div class="brand-wall-name">Carnival Cruise</div>
+    <div class="brand-wall-divider"></div>
+    <div class="brand-wall-name">Snapchat</div>
+
+    <div class="brand-wall-highlight">
+      <div class="brand-wall-name">National Geographic</div>
+    </div>
+
+    <div class="brand-wall-name"><span class="ann-deleted">Master Card</span> <span class="ann-new">Mastercard</span></div>
+    <div class="brand-wall-divider"></div>
+    <div class="brand-wall-name">Disney</div>
+    <div class="brand-wall-divider"></div>
+    <div class="brand-wall-name">Stella Artois</div>
+    <div class="brand-wall-divider"></div>
+    <div class="brand-wall-name"><span class="ann-deleted">Volkswagon</span> <span class="ann-new">Volkswagen</span></div>
+    <div class="brand-wall-divider"></div>
+    <div class="brand-wall-name"><span class="ann-deleted">Ritz Carlton</span> <span class="ann-new">Ritz-Carlton</span></div>
+    <div class="brand-wall-divider"></div>
+    <div class="brand-wall-name">Apple</div>
+    <div class="brand-wall-divider"></div>
+    <div class="brand-wall-name"><span class="ann-deleted">Facebook</span> <span class="ann-new">Meta</span></div>
+    <div class="brand-wall-divider"></div>
+    <div class="brand-wall-name">Rolex</div>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">FIX</span>
+    <strong>Spelling &amp; brand accuracy:</strong><br>
+    &bull; "Master Card" &rarr; "Mastercard" (one word, their official brand name since 2016)<br>
+    &bull; "Volkswagon" &rarr; "Volkswagen" (misspelled &mdash; embarrassing for a design portfolio)<br>
+    &bull; "Ritz Carlton" &rarr; "Ritz-Carlton" (hyphen is part of the brand)<br>
+    &bull; "Facebook" &rarr; "Meta" (rebranded 2021; using old name looks out of touch)<br><br>
+    <strong>Brand selection:</strong> This wall is strong. Macy's, Carnival, Snapchat, National Geographic, Apple &mdash; these are the brands where Bubs had the most visible impact. Consider whether Stella Artois, Volkswagen, and Rolex had deep enough engagements to warrant this prominent placement. If the work was brief or peripheral, swap for brands with stronger case studies (Marriott is notably missing from this wall).
+  </div>
+
+  <div class="brand-wall-float brand-wall-float-1">
+    <div class="brand-wall-float-top"><span class="ann-deleted">honors</span> <span class="ann-new">Carnival Cruise</span></div>
+    <div class="brand-wall-float-center">
+      <span class="ann-deleted">Making<br>Breaking<br>Defining<br>Industries</span>
+      <span class="ann-new">+400%<br>Mobile<br>Bookings</span>
+    </div>
+    <div class="brand-wall-float-bottom">
+      <span><span class="ann-deleted">honors</span> <span class="ann-new">UX &amp; Product</span></span>
+      <span><span class="ann-deleted">honors</span> <span class="ann-new">view case &rarr;</span></span>
+      <span><span class="ann-deleted">honors</span> <span class="ann-new">Hospitality</span></span>
+    </div>
+  </div>
+
+  <div class="brand-wall-float brand-wall-float-2" style="background:rgba(0,0,0,0.3);">
+    <div class="brand-wall-float-top" style="color:var(--white);"><span class="ann-deleted">honors</span> <span class="ann-new">National Geographic</span></div>
+    <div class="brand-wall-float-center" style="color:var(--white);">
+      <span class="ann-deleted">Making<br>Breaking<br>Defining<br>Industries</span>
+      <span class="ann-new">Triple<br>Webby<br>Winner</span>
+    </div>
+    <div class="brand-wall-float-bottom" style="color:var(--white);">
+      <span><span class="ann-deleted">honors</span> <span class="ann-new">Editorial &amp; UX</span></span>
+      <span><span class="ann-deleted">honors</span> <span class="ann-new">view case &rarr;</span></span>
+      <span><span class="ann-deleted">honors</span> <span class="ann-new">Media</span></span>
+    </div>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">MAJOR</span>
+    <strong>Floating cards:</strong> Both cards show identical "Making / Breaking / Defining / Industries" with "honors" labels &mdash; pure placeholder. These are premium real estate. Replace with real case study teasers: Carnival (+400% mobile bookings) and Nat Geo (Triple Webby). Each card should be a mini proof point that makes visitors want to scroll deeper.
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 5: SKILLS (preserved from previous build)
+     ============================================= -->
+<div class="ann-section-header">SECTION 5: SKILLS &mdash; Copy Review</div>
+<section id="skills" class="skills">
+  <!-- Skills section top bar -->
+  <div style="padding:40px var(--side-pad);display:flex;justify-content:space-between;align-items:flex-start;font-family:var(--font-label);color:var(--bg-dark);font-size:24px;">
+    <span style="font-weight:600;"><span class="ann-deleted">portfolio</span> <span class="ann-new">capabilities</span></span>
+    <span style="font-weight:200;"><span class="ann-deleted">portfolio</span> <span class="ann-new">bubs shah</span></span>
+    <span style="font-weight:200;"><span class="ann-deleted">portfolio</span> <span class="ann-new">2026</span></span>
+    <span style="font-weight:200;"><span class="ann-deleted">portfolio</span> <span class="ann-new">8 disciplines</span></span>
+    <span style="font-weight:200;"><span class="ann-deleted">portfolio</span> <span class="ann-new">30 years</span></span>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">FIX</span>
+    <strong>"portfolio" x5 placeholder:</strong> The top bar of every section uses "portfolio" as a repeated placeholder label. Replace each instance with contextual metadata: section name, name, year, count. This pattern repeats throughout &mdash; every instance of "portfolio" used as a nav/label is placeholder text that needs real content.
+  </div>
+
+  <!-- SK[photo]LLS title -->
+  <div class="skills-hero" style="background:var(--text);border-radius:40px;margin:0 40px;">
+    <div class="skills-title" style="color:var(--bg-dark);">
+      SK<span class="skills-title-photo"><!-- Bubs portrait placeholder --></span>LLS
+    </div>
+  </div>
+
+  <!-- Skill rows with descriptions from Figma -->
+  <div class="skills-list" style="padding-top:200px;">
+    <div class="skill-row">
+      <div class="skill-row-name" style="font-style:normal;">AI</div>
+      <div class="skill-row-right">
+        <div class="skill-row-desc">Designing for agents, not just users</div>
+        <div class="skill-row-tags">Agentic UX · AI personalization · prompt engineering · human-AI interaction · MCP integration · LLM design patterns</div>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name" style="font-style:normal;">Visual</div>
+      <div class="skill-row-right">
+        <div class="skill-row-desc">Art direction that stops the scroll and moves the needle</div>
+        <div class="skill-row-tags">Visual systems · editorial design · motion design · photography direction · creative strategy</div>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name" style="font-style:normal;">Branding</div>
+      <div class="skill-row-right">
+        <div class="skill-row-desc">Identity systems that scale from startup to Fortune 500</div>
+        <div class="skill-row-tags">Brand architecture · visual storytelling · multi-brand systems · brand strategy · naming · positioning</div>
+      </div>
+    </div>
+    <div class="skill-row skill-row--highlight">
+      <div class="skill-row-name" style="font-style:normal;">Leadership</div>
+      <div class="skill-row-right">
+        <div class="skill-row-desc"><span class="ann-deleted">Designing for agents, not just users</span> <span class="ann-new">Scaling design orgs from 5 to 50+ and making them revenue centers</span></div>
+        <div class="skill-row-tags"><span class="ann-deleted">Agentic UX · AI personalization · prompt engineering · human-AI interaction · MCP integration · LLM design patterns</span> <span class="ann-new">Design org scaling · cross-functional leadership · executive stakeholder management · design ops · mentorship · culture building · P&L ownership</span></div>
+      </div>
+    </div>
+
+    <div class="ann-bubble-inline">
+      <span class="ann-label">CRITICAL</span>
+      <strong>Leadership = copy-paste of AI row:</strong> The Leadership skill description and tags are identical to the AI row ("Designing for agents, not just users" + "Agentic UX, MCP integration, LLM design patterns"). This is a copy-paste error. Leadership is arguably Bubs's strongest differentiator &mdash; it needs its own description focused on org building, P&L ownership, and executive leadership.
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name" style="font-style:normal;">Product</div>
+      <div class="skill-row-right">
+        <div class="skill-row-desc">From zero-to-one to billion-dollar scale</div>
+        <div class="skill-row-tags">Product strategy · growth design · experimentation · user research · conversion optimization · 0-to-1 launches</div>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name" style="font-style:normal;">Dev</div>
+      <div class="skill-row-right">
+        <div class="skill-row-desc">Bridging design and engineering — in code, not just Figma</div>
+        <div class="skill-row-tags">React · Next.js · design-to-code · prototyping in code · design systems engineering · API integration</div>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name" style="font-style:normal;">3D</div>
+      <div class="skill-row-right">
+        <div class="skill-row-desc">Immersive experiences beyond the flat screen</div>
+        <div class="skill-row-tags">3D animation · spatial design · AR/VR prototyping · WebGL · immersive storytelling</div>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name" style="font-style:normal;">Systems</div>
+      <div class="skill-row-right">
+        <div class="skill-row-desc">The infrastructure behind every consistent brand experience</div>
+        <div class="skill-row-tags">Component architecture · design tokens · accessibility standards · multi-brand systems · governance · documentation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 6: STATS SHOWCASE (red glassmorphic card)
+     ============================================= -->
+<div class="ann-section-header">SECTION 6: STATS SHOWCASE &mdash; Copy Review</div>
+<section id="stats-showcase" class="stats-showcase">
+  <div class="stats-showcase-bg">
+    <div class="stats-showcase-bg-overlay"></div>
+  </div>
+
+  <div class="stats-showcase-container">
+    <div class="stats-showcase-label"><span class="ann-deleted">honors</span> <span class="ann-new">career impact</span></div>
+    <div class="stats-showcase-divider"></div>
+
+    <div class="stats-showcase-hero-stat">
+      <div class="stats-showcase-hero-number">30<span class="plus">+</span> Years</div>
+      <div class="stats-showcase-hero-label">as a Design Leader</div>
+    </div>
+
+    <div class="stats-showcase-row">
+      <div class="stats-showcase-item">
+        <div class="stats-showcase-item-number"><span class="ann-deleted">105 Billion</span> <span class="ann-new">$10B+</span></div>
+        <div class="stats-showcase-item-label">Revenue impacted</div>
+      </div>
+      <div class="stats-showcase-item">
+        <div class="stats-showcase-item-number"><span class="ann-deleted">29 Industries</span> <span class="ann-new">9 Industries</span></div>
+        <div class="stats-showcase-item-label">Transformed</div>
+      </div>
+    </div>
+
+    <div class="ann-bubble-inline">
+      <span class="ann-label">CRITICAL</span>
+      <strong>Same inflated stats repeated:</strong> Fix here matches Section 2 &mdash; $10B+ and 9 industries. These numbers appear in 3 places on the site; they must be consistent everywhere.
+    </div>
+
+    <div class="stats-showcase-ctas">
+      <div class="stats-showcase-ctas-row">
+        <div class="stats-showcase-cta">
+          <span class="stats-showcase-cta-sm">explore</span>
+          <span class="stats-showcase-cta-lg">the work</span>
+        </div>
+        <div class="stats-showcase-cta">
+          <span class="stats-showcase-cta-sm"><span class="ann-deleted">portfolio</span> <span class="ann-new">hire</span></span>
+          <span class="stats-showcase-cta-lg"><span class="ann-deleted">it speaks for itself</span> <span class="ann-new">bubs shah</span></span>
+        </div>
+      </div>
+      <div class="stats-showcase-ctas-row">
+        <div class="stats-showcase-cta">
+          <span class="stats-showcase-cta-sm"><span class="ann-deleted">explore</span> <span class="ann-new">download</span></span>
+          <span class="stats-showcase-cta-lg"><span class="ann-deleted">the work</span> <span class="ann-new">resume</span></span>
+        </div>
+        <div class="stats-showcase-cta">
+          <span class="stats-showcase-cta-sm"><span class="ann-deleted">portfolio</span> <span class="ann-new">let's talk</span></span>
+          <span class="stats-showcase-cta-lg"><span class="ann-deleted">it speaks for itself</span> <span class="ann-new">bubs@designtitan.co</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ann-bubble-inline">
+      <span class="ann-label">CHANGE</span>
+      <strong>Duplicate CTAs:</strong> Four CTA pairs, all repeating "explore the work" and "portfolio it speaks for itself." This is wasted space. After seeing impact stats, visitors are primed to act. Give them real actions: "hire bubs shah", "download resume", "let's talk" with email. Convert attention into action.
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 7: EXPERIENCE LIST (brands + roles)
+     ============================================= -->
+<div class="ann-section-header">SECTION 7: EXPERIENCE &mdash; Copy Review</div>
+<section id="experience" class="experience">
+  <div class="experience-list">
+    <div class="experience-item">
+      <div class="experience-name">MACY'S</div>
+      <div class="experience-role"><span class="ann-deleted">Director of Design</span> <span class="ann-new">VP, Design &amp; Digital Experience</span></div>
+    </div>
+    <div class="experience-divider"></div>
+
+    <div class="experience-item">
+      <div class="experience-name">Carnival</div>
+      <div class="experience-role"><span class="ann-deleted">Director of Design</span> <span class="ann-new">Sr. Director, Digital Product Design</span></div>
+    </div>
+    <div class="experience-divider"></div>
+
+    <div class="experience-item">
+      <div class="experience-name">Snapchat</div>
+      <div class="experience-role"><span class="ann-deleted">Director of Design</span> <span class="ann-new">Design Lead, AR Experiences</span></div>
+    </div>
+
+    <div class="experience-highlight">
+      <div class="experience-item">
+        <div class="experience-name"><span class="ann-deleted">nat geo</span> <span class="ann-new">NAT GEO</span></div>
+        <div class="experience-role"><span class="ann-deleted">Director of Design</span> <span class="ann-new">Creative Director, Digital</span></div>
+      </div>
+    </div>
+
+    <div class="experience-item">
+      <div class="experience-name">Apple</div>
+      <div class="experience-role"><span class="ann-deleted">Director of Design</span> <span class="ann-new">Product Designer</span></div>
+    </div>
+    <div class="experience-divider"></div>
+
+    <div class="experience-item">
+      <div class="experience-name">Disney</div>
+      <div class="experience-role"><span class="ann-deleted">Director of Design</span> <span class="ann-new">Sr. UX Designer, Interactive</span></div>
+    </div>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">CRITICAL</span>
+    <strong>"Director of Design" for every role:</strong> Listing the same title for 6 different companies is clearly placeholder text. It undermines credibility &mdash; no one holds the exact same title at Apple, Snapchat, and a cruise line. Replace with actual titles from Bubs's resume. The titles I've suggested are illustrative; Bubs should confirm exact titles. Also: "nat geo" should be capitalized consistently ("NAT GEO") since every other brand name is capitalized.
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 8: FULL BRAND LIST (4-column grid)
+     ============================================= -->
+<div class="ann-section-header">SECTION 8: FULL BRAND LIST &mdash; Copy Review</div>
+<section id="brand-list" class="brand-list">
+  <div class="brand-list-watermark">THIRTY</div>
+  <div class="brand-list-label"><span class="ann-deleted">portfolio</span> <span class="ann-new">complete client roster</span></div>
+
+  <div class="brand-list-grid">
+    <!-- Column 1 -->
+    <div>
+      <div class="brand-list-item">Apple</div>
+      <div class="brand-list-item">Marriott</div>
+      <div class="brand-list-item">National Geographic</div>
+      <div class="brand-list-item">Macy's</div>
+      <div class="brand-list-item">Bloomingdale's</div>
+      <div class="brand-list-item">20th Century Fox</div>
+      <div class="brand-list-item"><span class="ann-deleted">Ritz Carlton</span> <span class="ann-new">Ritz-Carlton</span></div>
+      <div class="brand-list-item">Mastercard</div>
+      <div class="brand-list-item">Rolex</div>
+      <div class="brand-list-item brand-list-item--placeholder"><span class="ann-deleted">Bonvoy</span> <span class="ann-new">Marriott Bonvoy</span></div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">Bonvoy</span> <span class="ann-new">[REMOVE DUPLICATE]</span></div>
+    </div>
+    <!-- Column 2 -->
+    <div>
+      <div class="brand-list-item">Calvin Klein</div>
+      <div class="brand-list-item">David Yurman</div>
+      <div class="brand-list-item">Carnival</div>
+      <div class="brand-list-item">Disney</div>
+      <div class="brand-list-item">Snapchat</div>
+      <div class="brand-list-item">QVC</div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">QVC</span> <span class="ann-new">[REMOVE x5 DUPLICATES]</span></div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">QVC</span></div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">QVC</span></div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">QVC</span></div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">QVC</span></div>
+    </div>
+    <!-- Column 3 -->
+    <div>
+      <div class="brand-list-item">Heineken</div>
+      <div class="brand-list-item" style="opacity:0.3;"><span class="ann-deleted">Rolex</span> <span class="ann-new">[DUPLICATE &mdash; already in Col 1]</span></div>
+      <div class="brand-list-item">Clinique</div>
+      <div class="brand-list-item">ExxonMobil</div>
+      <div class="brand-list-item">Yahoo</div>
+      <div class="brand-list-item">Sprint</div>
+      <div class="brand-list-item">Envision</div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">Sprint</span> <span class="ann-new">[REMOVE x4 DUPLICATES]</span></div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">Sprint</span></div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">Sprint</span></div>
+      <div class="brand-list-item brand-list-item--placeholder" style="opacity:0.3;"><span class="ann-deleted">Sprint</span></div>
+    </div>
+    <!-- Column 4 -->
+    <div>
+      <div class="brand-list-item">FAA</div>
+      <div class="brand-list-item">CDW</div>
+      <div class="brand-list-item">Hydra Host</div>
+      <div class="brand-list-item">Freedom Square</div>
+      <div class="brand-list-item">LoveTrails</div>
+      <div class="brand-list-item" style="opacity:0.3;"><span class="ann-deleted">Freedom Square</span> <span class="ann-new">[DUPLICATE]</span></div>
+      <div class="brand-list-item">American University</div>
+      <div class="brand-list-item">Celcite</div>
+      <div class="brand-list-item">GetWellNetwork</div>
+      <div class="brand-list-item">Just Collab</div>
+      <div class="brand-list-item">XStreamHD</div>
+    </div>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">CRITICAL</span>
+    <strong>Duplicate placeholders everywhere:</strong><br>
+    &bull; "Bonvoy" appears 2x (should be "Marriott Bonvoy" once &mdash; it's a Marriott sub-brand)<br>
+    &bull; "QVC" appears 6x (5 are placeholders)<br>
+    &bull; "Sprint" appears 5x (4 are placeholders)<br>
+    &bull; "Rolex" appears in both Column 1 and Column 3<br>
+    &bull; "Freedom Square" appears 2x in Column 4<br><br>
+    These are clearly filler items used to balance column heights in the Figma comp. Remove all duplicates. If you need to balance columns, add real brands or reduce the grid. Shipping duplicates signals the site wasn't reviewed before going live.<br><br>
+    <strong>Brand tier mixing:</strong> Column 4 (FAA, CDW, Hydra Host, LoveTrails, Celcite, GetWellNetwork, Just Collab, XStreamHD) is significantly weaker than Columns 1-2 (Apple, Marriott, Disney). Consider whether these smaller brands dilute the premium positioning. A shorter, curated list may have more impact than padding with lesser-known names.
+  </div>
+
+  <div class="brand-list-tagline">
+    <span class="ann-deleted">Billions in impact.</span> <span class="ann-new">$10B+ in impact.</span> 150+ awards. I design products that move culture and move revenue — simultaneously.
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">CHANGE</span>
+    <strong>Tagline:</strong> "Billions" is vague. Use the specific "$10B+" figure for consistency. The rest of this line is actually great copy &mdash; "move culture and move revenue simultaneously" is a keeper.
+  </div>
+
+  <div class="brand-list-nav">
+    <span><span class="ann-deleted">portfolio</span> <span class="ann-new">bubs shah</span></span>
+    <span><span class="ann-deleted">portfolio</span> <span class="ann-new">designtitan.co</span></span>
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 9: INDUSTRIES (word cloud)
+     ============================================= -->
+<div class="ann-section-header">SECTION 9: INDUSTRIES &mdash; Copy Review</div>
+
+<div class="ann-bubble-inline">
+  <span class="ann-label">MAJOR</span>
+  <strong>29 industries listed &mdash; contradicts "9 industries" claim:</strong> The site claims 9 industries in the stats, but this section lists 29 including Architecture, Banking, CPG, Professional Services, etc. Pick one number and stick with it. If the claim is 9, show only the 9 industries where Bubs has deep case-study-level work. If the real number is higher, update the stat &mdash; but "29" strains credibility unless each can be backed with a named client.<br><br>
+  <strong>"HOSPITALITY" appears twice</strong> in the word cloud. Remove the duplicate.<br><br>
+  <strong>Recommendation:</strong> Keep 9-12 industries max. Highlight the ones with named clients (Tech, Hospitality, Media, Retail, Luxury, Government, Energy, Beauty, Entertainment). Remove the rest or group them as "and more."
+</div>
+
+<section id="industries" class="industries">
+  <div class="industries-words">
+    <div class="industries-words-row">
+      <span class="ind-thin">GAMING</span>
+      <span class="ind-medium">FASHION</span>
+      <span class="ind-black">TECH</span>
+      <span class="ind-light">BEAUTY</span>
+      <span class="ind-regular">PHARMA</span>
+      <span class="ind-black">LUXURY</span>
+    </div>
+    <div class="industries-words-row">
+      <span class="ind-black">AUTOMOTIVE</span>
+      <span class="ind-medium">FOOD&amp;</span><span class="ind-thin">BEVERAGE</span>
+      <span class="ind-black">HOSPITALITY</span>
+      <span class="ind-light">AI</span>
+    </div>
+    <div class="industries-words-row">
+      <span class="ind-thin">MEDIA</span>
+      <span class="ind-medium">RETAIL</span>
+      <span class="ind-black">HOSPITALITY</span>
+      <span class="ind-light">CONSUMER </span><span class="ind-thin">CULTURE</span>
+    </div>
+    <div class="industries-words-row">
+      <span class="ind-thin">ENERGY</span>
+      <span class="ind-medium">WELLNESS</span>
+      <span class="ind-black">SOFTWARE</span>
+      <span class="ind-light">NON-PROFIT</span>
+    </div>
+    <div class="industries-words-row">
+      <span class="ind-regular">TRAVEL</span>
+      <span class="ind-black">FINANCE</span>
+      <span class="ind-medium">ENTERTAINMENT</span>
+      <span class="ind-black">HOME</span>
+      <span class="ind-light">B2B</span>
+    </div>
+    <div class="industries-words-row">
+      <span class="ind-black">ARCHITECTURE</span>
+      <span class="ind-light">PROFESSIONAL SERVICES</span>
+      <span class="ind-medium">BANKING</span>
+    </div>
+    <div class="industries-words-row">
+      <span class="ind-medium">EDUCATION</span>
+      <span class="ind-black">GOVERNMENT</span>
+      <span class="ind-light">HEALTHCARE</span>
+      <span class="ind-black">CPG</span>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 10: AWARDS + HONORS
+     ============================================= -->
+<div class="ann-section-header">SECTION 10: AWARDS &mdash; Copy Review</div>
+
+<div class="ann-bubble-inline">
+  <span class="ann-label">NOTE</span>
+  <strong>Awards section is solid.</strong> The award names are real and impressive. The visual bar-chart treatment is distinctive. Only fixes needed: replace "portfolio" placeholder nav labels, and update "Billions" to "$10B+" in the description for consistency.
+</div>
+
+<section id="awards" class="awards">
+  <div class="awards-nav">
+    <span><span class="ann-deleted">portfolio</span> <span class="ann-new">awards</span></span>
+    <span><span class="ann-deleted">portfolio</span> <span class="ann-new">150+ and counting</span></span>
+  </div>
+
+  <div class="awards-content">
+    <div class="awards-tagline">move culture and move revenue</div>
+
+    <div class="awards-description">
+      Billions in impact. 150+ awards. I design products that move culture and move revenue — simultaneously.
+    </div>
+
+    <div class="awards-title">awards + honors</div>
+
+    <div class="awards-nav" style="margin-bottom:0;">
+      <span>portfolio</span>
+      <span>portfolio</span>
+    </div>
+
+    <!-- Award logo bar chart -->
+    <div class="awards-logos">
+      <div class="award-logo-box alb-1"><span style="color:#fff;font-family:var(--font-label);font-size:14px;font-weight:600;">Cannes Lions</span></div>
+      <div class="award-logo-box alb-2"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">Webby</span></div>
+      <div class="award-logo-box alb-3"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">ADC</span></div>
+      <div class="award-logo-box alb-4"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">D&amp;AD</span></div>
+      <div class="award-logo-box alb-5"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">Awwwards</span></div>
+      <div class="award-logo-box alb-6"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">FWA</span></div>
+      <div class="award-logo-box alb-7"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">One Show</span></div>
+      <div class="award-logo-box alb-8"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">Clio</span></div>
+      <div class="award-logo-box alb-9"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">AIGA</span></div>
+      <div class="award-logo-box alb-10"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">Graphis</span></div>
+      <div class="award-logo-box alb-11"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">Effie</span></div>
+      <div class="award-logo-box alb-12"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">Red Dot</span></div>
+      <div class="award-logo-box alb-13"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">iF</span></div>
+      <div class="award-logo-box alb-14"><span style="color:#fff;font-family:var(--font-label);font-size:12px;font-weight:600;">Comm</span></div>
+      <div class="award-logo-box alb-15"><span style="color:#fff;font-family:var(--font-label);font-size:11px;font-weight:600;">GDUSA</span></div>
+    </div>
+
+    <div class="awards-nav" style="margin-bottom:0;">
+      <span>portfolio</span>
+      <span>portfolio</span>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 11: EDITORIAL ABOUT
+     ============================================= -->
+<div class="ann-section-header">SECTION 11: EDITORIAL / ABOUT &mdash; Copy Review</div>
+<section id="editorial" class="editorial">
+  <div class="editorial-bg">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, var(--bg-dark) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.6) 100%);"></div>
+  </div>
+
+  <div class="editorial-content">
+    <div class="editorial-label"><span class="ann-deleted">move revenue</span> <span class="ann-new">about bubs shah</span></div>
+    <div class="editorial-headline">
+      <span class="ann-deleted">Moda Metropolis<br>Haute Harbor</span>
+      <span class="ann-new">Design Executive<br>Brand Strategist</span>
+    </div>
+    <div class="editorial-sub">
+      <span class="ann-deleted">Moda Metropolis<br>Haute Harbor<br>Eleganza Heights</span>
+      <span class="ann-new">30 years building the future of design.<br>Leading experiences for global giants.<br>Redefining what design can do for business.</span>
+    </div>
+  </div>
+
+  <div class="editorial-content">
+    <div class="editorial-label"><span class="ann-deleted">move revenue</span> <span class="ann-new">the philosophy</span></div>
+    <div class="editorial-headline" style="font-size:clamp(2rem,4vw,80px);">
+      <span class="ann-deleted">Moda Metropolis<br>Haute Harbor</span>
+      <span class="ann-new">Design is a P&L,<br>Not a Department</span>
+    </div>
+    <div class="editorial-sub">
+      <span class="ann-deleted">Moda Metropolis<br>Haute Harbor<br>Eleganza Heights</span>
+      <span class="ann-new">From Apple to cruise ships. From National Geographic to the FAA.<br>I don't specialize &mdash; I translate.<br>Drop me into any industry and I'll ship something that wins awards and prints money.</span>
+    </div>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">CRITICAL</span>
+    <strong>Entire section is placeholder:</strong> "Moda Metropolis / Haute Harbor / Eleganza Heights" is AI-generated fashion-sounding filler text. It appears twice. "move revenue" as a label is meaningless without context. This section should be the emotional core of the site &mdash; the "about" that hiring managers will read carefully. Replace with:<br><br>
+    &bull; Block 1: Who Bubs is (title, positioning, career arc)<br>
+    &bull; Block 2: Philosophy/approach (the "design as P&L" manifesto that's already in the other version of the site &mdash; it's excellent copy, use it here)
+  </div>
+
+  <div class="editorial-nav">
+    <span class="editorial-nav-bold"><span class="ann-deleted">portfolio</span> <span class="ann-new">bubs shah</span></span>
+    <span class="editorial-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">designtitan.co</span></span>
+    <span class="editorial-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">available now</span></span>
+    <span class="editorial-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">VP / Head of Design</span></span>
+    <span class="editorial-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">bubs@designtitan.co</span></span>
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 12: CITIES
+     ============================================= -->
+<div class="ann-section-header">SECTION 12: CITIES &mdash; Copy Review</div>
+
+<div class="ann-bubble-inline">
+  <span class="ann-label">NOTE</span>
+  <strong>Cities section lacks context.</strong> Five city names in giant type look impressive visually, but the visitor doesn't know why they're here. Are these places Bubs has worked? Lived? Presented at conferences? Add a small label above: "Where the work lives" or "Based in LA &middot; Work spans the globe" to give it meaning. Without context, it's decoration, not communication.<br><br>
+  Also verify: has Bubs actually worked in Dubai and Tokyo, or are these aspirational? Only list cities with real professional history.
+</div>
+
+<section id="cities" class="cities">
+  <div class="cities-list">
+    <div class="city-name">Los Angeles</div>
+    <div class="city-name">Dubai</div>
+    <div class="city-name">New York</div>
+    <div class="city-name">Tokyo</div>
+    <div class="city-name">London</div>
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 13: DAMN.
+     ============================================= -->
+<div class="ann-section-header">SECTION 13: DAMN. &mdash; Copy Review</div>
+<section id="damn" class="damn">
+  <div class="damn-top-nav">
+    <span class="damn-nav-bold"><span class="ann-deleted">portfolio</span> <span class="ann-new">bubs shah</span></span>
+    <span class="damn-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">designtitan.co</span></span>
+    <span class="damn-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">2026</span></span>
+    <span class="damn-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">available now</span></span>
+    <span class="damn-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">VP / Head of Design</span></span>
+  </div>
+
+  <div class="damn-center">
+    <div class="damn-pre">
+      <div class="damn-pre-title"><span class="ann-deleted">honors</span> <span class="ann-new">the track record</span></div>
+      <div class="damn-pre-body"><span class="ann-deleted">Lorem ipsum dolor sit amet consectetur. Congue venenatis sit ac libero nisl consectetur. Sed leo ut diam lectus et nunc. Laoreet sed ac dictum eget.</span> <span class="ann-new">Took Marriott's app from 1.5 to 4.9 stars. Grew Carnival's mobile bookings 400%. Won triple Webbys for National Geographic. Built and scaled design teams from 5 to 50+.</span></div>
+    </div>
+    <div class="damn-text">DAMN.</div>
+    <div class="damn-post"><span class="ann-deleted">Lorem ipsum dolor sit amet consectetur. Rhoncus cras id quis enim tristique amet. Viverra tempor dictum lorem curabitur enim lorem orci maecenas. Risus.</span> <span class="ann-new">That's 30 years of turning design into the most profitable department in the building. Not decoration. Not pixel-pushing. Revenue. Strategy. Culture. Results you can measure in billions.</span></div>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">CRITICAL</span>
+    <strong>Lorem ipsum shipped to production.</strong> Both the pre- and post-text around "DAMN." are Latin placeholder text. This is visible on the live staging site right now. The "DAMN." moment is actually a great editorial beat &mdash; it's the mic-drop after all the stats and brands. But it needs real copy that earns the reaction:<br><br>
+    &bull; <strong>Pre-text:</strong> Lead with the 3-4 most impressive proof points (Marriott app, Carnival bookings, Nat Geo Webbys, team scaling)<br>
+    &bull; <strong>Post-text:</strong> A bold, first-person summary of what it all adds up to &mdash; the "so what" that justifies DAMN.<br><br>
+    Also: "honors" as a label above the pre-text is placeholder. Replace with "the track record" or "proof."
+  </div>
+
+  <div class="damn-bottom-nav">
+    <span class="damn-nav-bold"><span class="ann-deleted">portfolio</span> <span class="ann-new">bubs shah</span></span>
+    <span class="damn-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">bubs@designtitan.co</span></span>
+    <span class="damn-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">linkedin</span></span>
+    <span class="damn-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">resume</span></span>
+    <span class="damn-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">let's talk</span></span>
+  </div>
+</section>
+
+<!-- =============================================
+     SECTION 14: FOOTER (BUBS vertical + image)
+     ============================================= -->
+<div class="ann-section-header">SECTION 14: FOOTER &mdash; Copy Review</div>
+<footer id="footer" class="footer">
+  <div class="footer-bg">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, var(--bg-dark) 0%, rgba(0,0,0,0.2) 30%, rgba(0,0,0,0.5) 100%);"></div>
+  </div>
+
+  <div class="footer-content">
+    <div class="footer-bubs">BUBS</div>
+    <div class="footer-ctas">
+      <div class="footer-ctas-row">
+        <div class="footer-cta-item">
+          <span class="footer-cta-sm"><span class="ann-deleted">explore</span> <span class="ann-new">email</span></span>
+          <span class="footer-cta-lg"><span class="ann-deleted">the work</span> <span class="ann-new">bubs@designtitan.co</span></span>
+        </div>
+        <div class="footer-cta-item">
+          <span class="footer-cta-sm"><span class="ann-deleted">portfolio</span> <span class="ann-new">connect</span></span>
+          <span class="footer-cta-lg"><span class="ann-deleted">it speaks for itself</span> <span class="ann-new">linkedin</span></span>
+        </div>
+      </div>
+      <div class="footer-ctas-row">
+        <div class="footer-cta-item">
+          <span class="footer-cta-sm"><span class="ann-deleted">explore</span> <span class="ann-new">download</span></span>
+          <span class="footer-cta-lg"><span class="ann-deleted">the work</span> <span class="ann-new">resume / CV</span></span>
+        </div>
+        <div class="footer-cta-item">
+          <span class="footer-cta-sm"><span class="ann-deleted">portfolio</span> <span class="ann-new">follow</span></span>
+          <span class="footer-cta-lg"><span class="ann-deleted">it speaks for itself</span> <span class="ann-new">@designtitan</span></span>
+        </div>
+      </div>
+      <div class="footer-ctas-row">
+        <div class="footer-cta-item">
+          <span class="footer-cta-sm"><span class="ann-deleted">explore</span> <span class="ann-new">based in</span></span>
+          <span class="footer-cta-lg"><span class="ann-deleted">the work</span> <span class="ann-new">los angeles</span></span>
+        </div>
+        <div class="footer-cta-item">
+          <span class="footer-cta-sm"><span class="ann-deleted">portfolio</span> <span class="ann-new">available for</span></span>
+          <span class="footer-cta-lg"><span class="ann-deleted">it speaks for itself</span> <span class="ann-new">VP / Head of Design</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ann-bubble-inline">
+    <span class="ann-label">MAJOR</span>
+    <strong>Footer CTAs are all identical placeholders:</strong> "explore the work" and "portfolio it speaks for itself" are repeated 3x each. The footer is the last thing a visitor sees &mdash; the conversion moment. Replace with real contact channels: email, LinkedIn, resume download, social handle, location, and the hiring CTA. Give people 6 distinct ways to take action. Every CTA should be a real link.
+  </div>
+
+  <div class="footer-nav">
+    <span class="footer-nav-bold"><span class="ann-deleted">portfolio</span> <span class="ann-new">&copy; 2026 Bubs Shah</span></span>
+    <span class="footer-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">DesignTitan.co</span></span>
+    <span class="footer-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">Privacy</span></span>
+    <span class="footer-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">Est. 1996</span></span>
+    <span class="footer-nav-light"><span class="ann-deleted">portfolio</span> <span class="ann-new">All Rights Reserved</span></span>
+  </div>
+</footer>
+
+<!-- =============================================
+     SUMMARY OF ALL CHANGES
+     ============================================= -->
+<div class="ann-section-header" style="margin-top:40px;">EXECUTIVE SUMMARY &mdash; All Copy Changes</div>
+<div style="background:#111;padding:40px 60px;font-family:'Jost',sans-serif;color:#fff;line-height:1.8;font-size:14px;max-width:900px;margin:0 auto 60px;">
+
+<h2 style="color:#39ff14;font-size:20px;font-weight:800;margin-bottom:20px;letter-spacing:0.1em;">CRITICAL ISSUES (Must Fix)</h2>
+<ol style="padding-left:20px;margin-bottom:30px;">
+  <li><strong>"105 Billion" &rarr; "$10B+"</strong> &mdash; Inflated by 10x. Destroys credibility with exactly the audience this targets.</li>
+  <li><strong>"29 industries" &rarr; "9 industries"</strong> &mdash; Same problem. Pick a defensible number.</li>
+  <li><strong>Lorem ipsum in DAMN section</strong> &mdash; Placeholder text shipped to the live staging site.</li>
+  <li><strong>"Moda Metropolis / Haute Harbor / Eleganza Heights"</strong> &mdash; AI-generated placeholder in the Editorial/About section.</li>
+  <li><strong>Leadership skill = copy-paste of AI skill</strong> &mdash; Identical description and tags. Obvious error.</li>
+  <li><strong>"Director of Design" for all 6 roles</strong> &mdash; Same title at Apple, Snapchat, and Disney. Placeholder.</li>
+  <li><strong>Brand list duplicates</strong> &mdash; QVC x6, Sprint x5, Bonvoy x2, Rolex x2, Freedom Square x2.</li>
+  <li><strong>"Volkswagon" misspelled</strong> &mdash; Should be "Volkswagen." Embarrassing on a design portfolio.</li>
+</ol>
+
+<h2 style="color:#39ff14;font-size:20px;font-weight:800;margin-bottom:20px;letter-spacing:0.1em;">HIGH-VALUE CHANGES (Brand Impact)</h2>
+<ol style="padding-left:20px;margin-bottom:30px;">
+  <li><strong>Hero headline "REMEMBER THE NAME" &rarr; "DESIGN IS THE WEAPON"</strong> &mdash; Shift from demanding respect to demonstrating value.</li>
+  <li><strong>Floating cards</strong> &mdash; Replace vague "Making/Breaking/Defining" with real case study teasers (Marriott 1.5&rarr;4.9, Carnival +400%).</li>
+  <li><strong>Editorial section</strong> &mdash; Needs real bio and philosophy copy. The manifesto from the other site version is strong; use it.</li>
+  <li><strong>DAMN section</strong> &mdash; Replace lorem ipsum with actual proof points that earn the "DAMN." reaction.</li>
+  <li><strong>Footer CTAs</strong> &mdash; Convert from identical placeholders to real contact channels (email, LinkedIn, resume, social).</li>
+  <li><strong>All "portfolio" nav labels</strong> &mdash; Replace ~30 instances of the word "portfolio" used as placeholder with contextual metadata.</li>
+  <li><strong>"Facebook" &rarr; "Meta"</strong> &mdash; Outdated brand name.</li>
+</ol>
+
+<h2 style="color:#39ff14;font-size:20px;font-weight:800;margin-bottom:20px;letter-spacing:0.1em;">WHAT WORKS WELL (Keep)</h2>
+<ul style="padding-left:20px;margin-bottom:30px;">
+  <li>Manifesto statements: "i build fortune 500 brands / i transform industries / i scale design organizations"</li>
+  <li>Awards section &mdash; real award names, strong visual treatment</li>
+  <li>Brand wall &mdash; strong top-line client list (after spelling fixes)</li>
+  <li>Skills section structure &mdash; 8 disciplines with descriptions is effective (after Leadership fix)</li>
+  <li>Tagline: "move culture and move revenue &mdash; simultaneously"</li>
+  <li>"DAMN." as an editorial beat &mdash; great concept once the surrounding copy is real</li>
+</ul>
+
+<h2 style="color:#39ff14;font-size:20px;font-weight:800;margin-bottom:20px;letter-spacing:0.1em;">SECTION REORDER SUGGESTION</h2>
+<p style="margin-bottom:15px;">Current order tells the story backwards. Consider this narrative flow:</p>
+<ol style="padding-left:20px;">
+  <li><strong>Hero</strong> (hook: who + what + why care)</li>
+  <li><strong>Stats</strong> (proof: the numbers)</li>
+  <li><strong>Brand Wall</strong> (social proof: who trusts me)</li>
+  <li><strong>Experience</strong> (career trajectory with real titles)</li>
+  <li><strong>Skills</strong> (what I bring)</li>
+  <li><strong>Awards</strong> (external validation)</li>
+  <li><strong>Editorial / About</strong> (the philosophy &mdash; "design as P&L")</li>
+  <li><strong>DAMN.</strong> (mic drop: proof points &rarr; reaction)</li>
+  <li><strong>Footer / Contact</strong> (convert: hire me, email, resume)</li>
+</ol>
+<p style="margin-top:15px;color:rgba(255,255,255,0.5);">Drop: Industries word cloud (redundant with brand wall), Cities (lacks context unless verified). Fold their content into other sections.</p>
+
+</div>
+
+</body>
+</html>
