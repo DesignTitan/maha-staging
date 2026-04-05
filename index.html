@@ -466,99 +466,131 @@
      SECTION 5: SKILLS
      ============================================= */
   .skills {
-    padding: var(--section-pad) var(--side-pad);
-    background: #fafafa;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
   }
 
-  .skills-header {
-    text-align: center;
-    margin-bottom: 3rem;
+  /* Portfolio marquee ticker */
+  .skills-marquee {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .skills-marquee-track {
+    display: inline-flex;
+    gap: 3rem;
+    animation: marquee-scroll 20s linear infinite;
+  }
+
+  .skills-marquee-track span {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    color: rgba(255,255,255,0.4);
+  }
+
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SK[photo]LLS title */
+  .skills-hero {
+    padding: clamp(2rem, 6vw, 5rem) var(--side-pad);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
   }
 
   .skills-title {
-    font-size: clamp(2rem, 5vw, 4rem);
-    font-weight: 700;
-    letter-spacing: 0.3em;
+    font-size: clamp(5rem, 14vw, 12rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
     text-transform: uppercase;
-  }
-
-  .skills-title-gap {
-    letter-spacing: 0.6em;
-    color: var(--text-ghost);
-  }
-
-  .skills-subtitle {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    margin-top: 0.5rem;
-  }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .skill-card {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.5rem;
-    background: white;
-    transition: all 0.3s var(--ease);
-    cursor: pointer;
-  }
-
-  .skill-card:hover {
-    border-color: var(--accent);
-    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
-    transform: translateY(-2px);
-  }
-
-  .skill-card-icon {
-    width: 42px;
-    height: 42px;
-    background: var(--dark-bg);
-    color: white;
-    border-radius: 10px;
-    margin-bottom: 1rem;
+    line-height: 0.85;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    align-items: flex-end;
   }
 
-  .skill-card-name {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+  .skills-title-photo {
+    width: clamp(3.5rem, 10vw, 9rem);
+    height: clamp(4.5rem, 13vw, 11.5rem);
+    background: #333;
+    display: inline-block;
+    flex-shrink: 0;
+    margin: 0 -0.05em;
+    position: relative;
+    top: -0.05em;
+    overflow: hidden;
   }
 
-  .skill-card-desc {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    margin-bottom: 0.75rem;
-    line-height: 1.6;
+  .skills-title-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .skill-card-tags {
+  /* Skill rows */
+  .skills-list {
+    padding: 0 var(--side-pad);
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+  }
+
+  .skill-row {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: clamp(0.8rem, 2vw, 1.4rem) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    gap: 2rem;
   }
 
-  .skill-card-tag {
-    font-size: 0.6rem;
-    font-weight: 600;
-    padding: 0.2rem 0.5rem;
-    background: #f4f4f5;
-    border-radius: 4px;
-    color: var(--text-dim);
+  .skill-row:first-child {
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .skill-row-name {
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    flex-shrink: 0;
+    font-style: italic;
+  }
+
+  .skill-row-desc {
+    font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+    color: rgba(255,255,255,0.45);
+    max-width: 280px;
+    text-align: right;
+    line-height: 1.5;
+    flex-shrink: 0;
+  }
+
+  /* LEADERSHIP highlight bar */
+  .skill-row--highlight {
+    background: linear-gradient(90deg, #e63c1a 0%, #ff6a2a 100%);
+    margin: 0 calc(var(--side-pad) * -1);
+    padding-left: var(--side-pad);
+    padding-right: var(--side-pad);
+    border-bottom: none;
+  }
+
+  .skill-row--highlight + .skill-row {
+    border-top: none;
+  }
+
+  .skill-row--highlight .skill-row-name {
+    color: #000;
+  }
+
+  .skill-row--highlight .skill-row-desc {
+    color: rgba(0,0,0,0.5);
   }
 
   /* =============================================
@@ -1277,95 +1309,53 @@
 
 <!-- SECTION 5: SKILLS -->
 <section id="skills" class="skills">
-  <div class="skills-header">
-    <div class="skills-title">SK<span class="skills-title-gap">&nbsp;&nbsp;&nbsp;&nbsp;</span>LLS</div>
-    <p class="skills-subtitle">The missing "I" = you, the viewer</p>
+
+  <!-- Portfolio marquee ticker -->
+  <div class="skills-marquee">
+    <div class="skills-marquee-track">
+      <span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span><span>portfolio</span>
+    </div>
   </div>
 
-  <div class="skills-grid">
-
-    <div class="skill-card">
-      <div class="skill-card-icon">AI</div>
-      <div class="skill-card-name">Artificial Intelligence</div>
-      <div class="skill-card-desc">Leveraging AI as a creative multiplier &mdash; from generative workflows to intelligent product features.</div>
-      <div class="skill-card-tags">
-        <span class="skill-card-tag">Prompt Engineering</span>
-        <span class="skill-card-tag">Generative AI</span>
-        <span class="skill-card-tag">AI-Assisted Design</span>
-        <span class="skill-card-tag">ML Integration</span>
-      </div>
+  <!-- SK[photo]LLS title -->
+  <div class="skills-hero">
+    <div class="skills-title">
+      SK<span class="skills-title-photo"><!-- Bubs portrait placeholder --></span>LLS
     </div>
-
-    <div class="skill-card">
-      <div class="skill-card-icon">VIS</div>
-      <div class="skill-card-name">Visual Design</div>
-      <div class="skill-card-desc">Pixel-perfect execution across brand systems, campaigns, and digital products at global scale.</div>
-      <div class="skill-card-tags">
-        <span class="skill-card-tag">UI Design</span>
-        <span class="skill-card-tag">Typography</span>
-        <span class="skill-card-tag">Motion</span>
-        <span class="skill-card-tag">Art Direction</span>
-      </div>
-    </div>
-
-    <div class="skill-card">
-      <div class="skill-card-icon">BRD</div>
-      <div class="skill-card-name">Branding</div>
-      <div class="skill-card-desc">Building brand systems that Fortune 500 companies trust to represent billions in market value.</div>
-      <div class="skill-card-tags">
-        <span class="skill-card-tag">Brand Strategy</span>
-        <span class="skill-card-tag">Identity Systems</span>
-        <span class="skill-card-tag">Brand Architecture</span>
-      </div>
-    </div>
-
-    <div class="skill-card">
-      <div class="skill-card-icon">LDR</div>
-      <div class="skill-card-name">Leadership</div>
-      <div class="skill-card-desc">Building and leading creative teams that ship award-winning work across enterprise organizations.</div>
-      <div class="skill-card-tags">
-        <span class="skill-card-tag">Team Building</span>
-        <span class="skill-card-tag">Design Ops</span>
-        <span class="skill-card-tag">C-Suite Comms</span>
-        <span class="skill-card-tag">Mentorship</span>
-      </div>
-    </div>
-
-    <div class="skill-card">
-      <div class="skill-card-icon">PRD</div>
-      <div class="skill-card-name">Product</div>
-      <div class="skill-card-desc">End-to-end product thinking &mdash; from discovery research through launch and growth optimization.</div>
-      <div class="skill-card-tags">
-        <span class="skill-card-tag">UX Strategy</span>
-        <span class="skill-card-tag">Product Design</span>
-        <span class="skill-card-tag">User Research</span>
-      </div>
-    </div>
-
-    <div class="skill-card">
-      <div class="skill-card-icon">DEV</div>
-      <div class="skill-card-name">Development</div>
-      <div class="skill-card-desc">Bridging design and engineering through vibe coding, prototyping, and hands-on front-end work.</div>
-      <div class="skill-card-tags">
-        <span class="skill-card-tag">Front-End</span>
-        <span class="skill-card-tag">Prototyping</span>
-        <span class="skill-card-tag">Vibe Coding</span>
-        <span class="skill-card-tag">CSS/JS</span>
-      </div>
-    </div>
-
-    <div class="skill-card">
-      <div class="skill-card-icon">3D</div>
-      <div class="skill-card-name">3D & Immersive</div>
-      <div class="skill-card-desc">Creating dimensional experiences &mdash; from 3D renders and spatial design to AR/VR explorations.</div>
-      <div class="skill-card-tags">
-        <span class="skill-card-tag">3D Modeling</span>
-        <span class="skill-card-tag">Spatial Design</span>
-        <span class="skill-card-tag">AR/VR</span>
-      </div>
-    </div>
-
   </div>
+
+  <!-- Skill rows -->
+  <div class="skills-list">
+    <div class="skill-row">
+      <div class="skill-row-name">AI</div>
+      <div class="skill-row-desc">Transforming Purpose Into Brands People Feel and Believe In.</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name">Visual</div>
+      <div class="skill-row-desc">Transforming Purpose Into Brands People Feel and Believe In.</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name">Branding</div>
+      <div class="skill-row-desc">Transforming Purpose Into Brands People Feel and Believe In.</div>
+    </div>
+    <div class="skill-row skill-row--highlight">
+      <div class="skill-row-name">Leadership</div>
+      <div class="skill-row-desc">Transforming Purpose Into Brands People Feel and Believe In.</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name">Product</div>
+      <div class="skill-row-desc">Transforming Purpose Into Brands People Feel and Believe In.</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name">Dev</div>
+      <div class="skill-row-desc">Transforming Purpose Into Brands People Feel and Believe In.</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-row-name">3D</div>
+      <div class="skill-row-desc">Transforming Purpose Into Brands People Feel and Believe In.</div>
+    </div>
+  </div>
+
 </section>
 
 <!-- SECTION 6: FULL BRAND LIST -->
